@@ -1,0 +1,67 @@
+Y Docker---- it is easy to install and run the softwares without worrying about setup and dependencies.
+
+
+Docker-Image-----single file with all the dependencies and all the configs required to run the program
+
+Docker-Container --- instance of the docker image runs as a program
+
+what is docker--
+
+it is an platform or an ecosystem to create and run containers
+
+docker eco system contains following things
+
+Docker client
+Docker server
+Docker Hub
+Docker Images
+Docker machine
+Docker Compose
+
+
+to install the docker follow the instructions given the confluence page
+
+
+docker run hello-world  -----> local machine [docker client --> docker server-->local image cache]
+
+
+what is Container:
+
+System call -- running program issues instructions to kerner to interact with the piece of hardware through system calls
+
+contains is a running process along with the subset of the resources allocated to that container.
+
+An image is a file system snapshot along with start up command to run the process.
+
+NameSpacing--- isolation of resources per process or group of process
+Control Groups -- Limit amount of resources used per process
+
+
+Docker Client Commands--
+
+create and run the container using image
+
+docker run [image-name] [default command override]
+
+List all running containers
+
+docker ps
+
+List all container created
+
+docker ps --all
+
+
+
+Container Life Cycle:
+
+docker run == docker create + docker start
+
+docker create -- preparign the container
+
+docker start -- runs the process through start up command
+
+
+docker start -a [container-id] ------- -a is required to watch for specific outpout and print in the terminal any messages
+
+

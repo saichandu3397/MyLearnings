@@ -1,0 +1,110 @@
+what are micro frontends ---- divide a monolithic app into multiple smaller apps and each smaller app is responsible for distinct feature of the product
+
+why to use them ----multiple engineering teams can work on them and each smaller app is easier to understant and make changes to
+
+
+container---- when and where to show each micro front end
+
+for intergrations of micro front end ---
+
+there is no single perfect solution,many solution have pros and cons,looking at requirements pick ur solution
+
+
+major categories of integrations---
+
+Build time integration(Compile time integration) ---Beforre container gets loaded in the browser,it get access to product list source code
+Run time integration(Client side integration)--After container gets loaded in the broser,it get access to product list source code
+
+
+Build Time Integration Steps---
+
+develop product list ---publish product list as npm package---install productlist as a dependency in the container----Output the bundle that includes all the code of productList
+
+Pros and cons
+
+easy to understant and setup
+
+
+container has to be redeployed if we make any changes to product list so product list and container becomes tightly  coupled
+
+
+Run Time Integration
+
+
+develop product list ---deploy product list at https://myapp.com/productlist.js---- navigate to myapp.com then container gets loader----- container app fetches productlist and executesit
+
+pros and cons
+
+product list can be deployed independently at any time
+
+different versions of product lsit can be deployed and container can decide which once to use
+
+but tooling and set up is far more complicated
+
+
+Some Back Ground on WebPAck------
+
+
+dependency
+dependency-------index.js-------webpack(Combine may js files into single file)-------bundle.js
+dependency                      
+
+
+
+html-webpack-plugin---- automatically adds the bundled js files into script tag of the html document
+
+
+
+Steps for integration::::
+
+
+Designate one app as Host(Container) and other as remote
+In remote decide which modules(files) you want to make available to other projects
+Setup module federation plugin to expose this files
+In Host decide which files u want to get from remote
+setup module federation plugin in host to fetch those files
+In Host refactor the entry point to load it asyncronously
+In Host import whatever files u need to import
+
+
+
+Understanding Module Federation:::
+
+
+index.js ---------- webpack ---- normal budling process -----main.js (this can be used to run the project as an standlone)
+							-----module federarion plugin------ remoteEntry.js (Contains a list of files available from this project and gives directions on how to load them)
+														------ src_index.js (Version of src/index.js that can safely loaded into the browser)
+														-------faker.js(Version of faker.js that can safely loaded into the browser)
+														
+														
+container app
+
+index.js(import('./bootstrap.js')----------------------------------webpack ---------  index.js(only contains contents of index.js)
+																			-------bootstrap.js (Contains bootstrap.js. Webpack knows it has to fetch something from products before running this file)
+bootstrap.js(import 'products/ProductIndex')
+
+
+
+ModuleFederationPluginConfigurations::::
+
+for Container App:
+
+name ----Only needed for remotes
+
+remotes--- lists the projects that container can get additional code
+
+inside removes products--- load the file at the listed url if anything in the container has import abc from 'products';
+
+
+
+Use shared Modules::::
+ with module federation plugin we can load the shared dependencies only once instead of loading multiple times
+ 
+ its does following thing
+ Container fetches Product remoteEntry.js file
+ COntainer fetches Cart remoteEntry.js file
+ Container notices both require faker dependency
+ Container can choose to load only from one copy either product or cart
+ Single Copy is made available to both product + cart
+ 
+ if both apps uses different versions of shared module then two different versions of than modules are loaded

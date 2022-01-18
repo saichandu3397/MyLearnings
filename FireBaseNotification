@@ -1,0 +1,73 @@
+FireBasePlugin: 
+
+
+onTokenRefresh-----This is the best way to get a valid token for the device as soon as the token is established
+
+
+onMessageReceived---- register notification callback
+
+
+NotificationFlow: 
+
+
+
+App in Background:
+
+User receives the notification message in its device notification bar
+User taps the notification and the app opens
+User receives the notification data in the JavaScript callback
+
+App in Use: 
+
+User receives the notification data in the JavaScript callback without any notification on the device itself (this is the normal behaviour of push notifications, it is up to you, the developer, to notify the user)
+
+
+
+grantPermission(IOS only) ----grant permission to receive push notifications
+
+
+hasPermission--- to check if permissions are granted
+
+
+
+
+cordova fire-base plugin:
+
+for configuration in android
+
+GoogleService-Info.plist for iOS and google-services.json for android and place them in the root folder of your cordova project
+
+
+
+
+In Back ground:
+
+automatically displayed to the user by the operating system on behalf of the client app while your app is not running or is in the background
+
+if your app is in the foreground when the notification message arrives, it is passed to the client app and it is the responsibility of the client app to display it.
+
+have a predefined set of user-visible keys and an optional data payload of custom key-value pairs.
+
+
+In Foreground:
+
+if you set the "notification_foreground":"true" key in the data section of the notification message payload, this will cause the plugin to display system notification when the message is received while your app is in the foreground
+
+
+
+tap:"back-ground"
+
+
+tap: "foreground"
+
+
+we wont get tap property if in the background app is running and not killed
+
+
+
+onApnsTokenReceived-- this will be called when remote user permission is granted by the user in  ios
+
+App debugging command-------- adb logcat | grep `adb shell ps | grep com.yourco.yourapp | cut -c10-15`
+
+
+

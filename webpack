@@ -1,0 +1,118 @@
+webpack is a static module bundler for modern javascript applications
+
+when webpack process the application it builds the dependency graph from one or more entry points and then combines every module your project need into one or more bundles
+
+An webpack module can express their dependencies in variety of ways such as
+
+through import statement 
+
+through require statement
+
+
+
+Webpack core concepts
+
+Entry:
+
+An entry point indicates which module webpack should use to use building internal dependency grahph;
+
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+};
+
+As a rule of thumb: Use exactly one entry point for each HTML document. See the issue described here for more details.
+
+
+
+
+
+webpack-dev-server is actually serving the files from the memory--once the server stops they are gone
+
+to actually build your files we are going to use webpack;
+
+add a script called build in package.json with the following command: webpack --mode development
+
+
+Output:
+the output property tells the webpack where to emit the bundles it creates and how to name these files
+
+If your configuration creates more than a single "chunk" (as with multiple entry points or when using plugins like CommonsChunkPlugin), you should use substitutions to ensure that each file has a unique name.
+
+eg:  module.exports = {
+  entry: './path/to/my/entry/file.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'my-first-webpack.bundle.js',
+  },
+};
+
+
+Mode::
+
+By setting the mode parameter to either development, production or none, you can enable webpack's built-in optimizations that correspond to each environment. The default value is production.
+
+
+module.exports = {
+  mode: 'production',
+};
+
+
+
+Loaders::
+
+webpack understands only js and json files.
+
+Loaders allow the webpack to process other type of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+
+At high level, loader has two properties:
+
+test: property identifies which file or files should be trasnsformed
+
+use: which loader should be used for the transformation of the code
+
+
+eg: 
+const path = require('path');
+
+module.exports = {
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+
+explanation: Hey webpack compiler, when you come across a path that resolves to a '.txt' file inside of a require()/import statement, use the raw-loader to transform it before you add it to the bundle.
+
+
+Plugins: 
+plugins can be leveraged to perform a wide range of tasks like bundle optimization,asset managment and injection of enviroment variables..
+
+eg: 
+const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
+const webpack = require('webpack'); //to access built-in plugins
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+};
+
+explanation: 
+In the example above, the html-webpack-plugin generates an HTML file for your application and automatically injects all your generated bundles into this file
+
+
+
+
+
+
+
+Specifying the presets in the webpack config will only affect webpack, everything else that uses babel (e.g. babel-node, babel-register, etc.) will not care about your webpack config and therefore doesn't see them.
+
+The other way around does work. So you can remove the webpack presets options if you have a .babelrc, because babel-loader uses babel under the hood, which obviously respects the .babelrc.
+
+ 
+

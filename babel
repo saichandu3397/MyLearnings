@@ -1,0 +1,32 @@
+babel can do following things
+ 1) transform your code
+ 2) Pollyfill features that are missing in the target environment
+ 3)source code transformations and many more...
+ 
+ Babel on high level does parsing, transformation and code generation steps
+ 
+ parsing --- Parsing is taking raw code and turning it into a more abstract representation of the code
+     
+transformation -----Transformation takes this abstract representation and manipulates to do whatever the compiler wants it to.
+     
+Code Generation takes the transformed representation of the code and turns it into new code.
+
+Babel has support to latest version of js through syntax transformers
+
+
+Trasform Plugins : these plugins apply transformations to your code
+SyntacPlugins:
+
+By default most of the syntax are transforable by the babel. but in rate cases it is not transferable in that cases u can use
+plugins such as @babel/plugin-syntax-bigint to only allow Babel to parse specific types of syntax. Or you want to preserve the source code because you only want Babel to do code analysis or codemods.
+
+
+@babel/preset-react:
+
+
+@babel/preset-env:
+@babel/preset-env is a smart preset that allows you to use the latest JavaScript without needing to micromanage which syntax transforms (and optionally, browser polyfills) are needed by your target environment(s). This both makes your life easier and JavaScript bundles smaller!: 
+
+
+
+
