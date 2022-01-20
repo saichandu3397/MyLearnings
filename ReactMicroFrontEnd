@@ -108,3 +108,14 @@ Use shared Modules::::
  Single Copy is made available to both product + cart
  
  if both apps uses different versions of shared module then two different versions of than modules are loaded
+ 
+ 
+ 
+ 
+ 
+ 
+ zero coupling between the child projects
+ near zero coupling between the container and child app
+ creating in single repo or seperate repos should not effect overall project
+ container should be able to use latest version of child app also or specify a specific version of the child app
+ css from one project shouldnt effect the another project(css should be independent)
