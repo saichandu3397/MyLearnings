@@ -1,0 +1,110 @@
+A process is a unit of execution that has its own memory space(heap)
+Each instance of jvm runs as a process(this is not true for all jvm implementatios but true for the most of them)
+when we run a java console application we are running a process
+
+each application or process has its own memory space that is heap which cannot be shared betweent the processes or applications
+
+
+A thread is a unit of execution within a process.Each process can have a multiple threads.In java for every application we have at least one thread and that is main thread
+
+Just about every java process has also has multiple system threads that handle tasks like memory management and i/o, we dont explicitly create and code those threads
+
+Every thread created by a process can share the process memorys and files
+
+thread stack is a memory that can be only accessed by that particular thread
+
+
+Each process has a heap memory space and every thread has a thread stack memory
+
+when working with the threads we are at the mercy of the jvm and os when it comes to when the threads are schdeduled to run.
+
+It is never legal to start a thread more than once. In particular, a thread may not be restarted once it has completed execution
+
+A thread can be created by creating the subclass of Thread by extending the thread method and overiding thr run method 
+
+In run method u can write what the thread ur actually creating to do
+
+start()  method will tell tell the jvm to start the new thread and executes the run method
+
+we also do the thread creation by implementing the runnable interface and implementing the run method
+
+and to create a thread we need to pass the class that implements runnable interface as a constructor argument for the thread = new Thread(runnable Interface implemented class)
+
+use of runnable interface provides flexibilty and most of the methods in thread use the runnable interface
+
+thread terminates implicilty when run method execution gets completed
+
+if we call the run method of thread insted of the start method then the run method will be executed on the same thread which called the run method
+
+join method : current thread waits for the completion of execution and then the current thread starts executing ; we can pass timeout value into the join method after which the current thread starts executing
+
+Syncronisation::
+
+
+when a thread call wait method it suspends the its execution and releases all the locks it holds untill another thread issues notifaction that something important has appened
+
+thread issues notification by calling notify or notifyAll methods
+
+Synchronised keyword is used in block statement or in the method declarations to avoid the thread interface or the race condition;
+
+race condition  :: it is where multiple threads fighting for same resources which can lead to inconsistency in the shared resources;
+
+producer and consumer problems:::
+
+deadlock is the situation where each thread waits for the completion of the other thread and release the lock that it shares with the other thread;
+
+Every object has internally has lock which threads uses for synchronization
+
+
+whenever a thread called wait method it stops the execution and suspends and releases all the locks it holds and wait till other threads release notification.
+
+
+thread cannot get suspended during the atomic operations
+
+some of the atomic operations are 
+
+referencing the object variable
+
+reading and writing primitive values except Long and double
+
+reading and writing variables declared with volatile keyword 
+
+
+ArrayList is not a thread safe collection ;
+
+vector class is a synchronized;
+
+
+
+JAVA UTIL CONCURRENT PACKAGES::
+
+Drawbacks of using synchronized block::
+
+once threads blocked by the synchronised blocks cannot be interpetted they are stuck there untill the object lock is available
+
+once the thread is waiting for the lock in synchronized blck there is no way it can timeout that execution,it has to wait for it indefinites untill synchronized block releases the thread.
+
+if multiple threads are waiting for execution of synchronized block then order of execution is decided by jvm and not on the bases of first come first serve. the thread that comes might execute last.
+
+synchronized block can execute only in one method it cant start in one method and ends in other methods
+
+we can test if the object intrinsinic lock is available and we cant find any information abount the lock
+
+
+Lock Inteface::
+
+ReentrantLock:
+
+
+ExecutorService::
+
+executor service make use of the thread pools.
+
+thread pools is a managed set of threads.it reduces the overhead of the thread creation.
+
+ex.execute();
+ex.shutdown();
+
+by using executor service it optimizes the thread management by jvm
+
+

@@ -1,0 +1,234 @@
+very popular framework for building java frameworks
+initially simpler and lighweight alternative to j2ee
+
+IOC:
+ the approach of outsourcing the construction and managment of the objects
+ 
+ SprintContainer
+ 
+ primary Function--- create and manage the objects (IOC) and  Inject objects dependencies (DI)
+ 
+ Spring Container can be configured three ways
+ 
+ XML Configuration file (legacy,but most legacy apps still use it)
+ Java annotations (modern)
+ Java source code (modern)
+ 
+ Spring Development process ---
+ 
+ configuring the spring beans
+ creating a spring container
+ retreiving beans from the spring container
+ 
+ 
+ Configuring the spring Beans::
+ 
+ fileName:: applicationContext.xml
+ <beans>
+	<bean id="name" class="fully qualified class name of the implementation class">
+	</bean>
+ </beans>
+ 
+ creating a Spring Container::
+ 
+ Spring container generally is known as ApplicationContext;
+ 
+ it has specialized implementations like
+ 
+ ClassPathXmlApplicationContext
+ AnnotationCOnfigApplicationContext
+ GenericWebApplicationContext
+ etc....
+ 
+ creating a spring container
+ 
+ ClassPathApplicationContext context = new ClassPathApplicationContext("applicationContext.xml");
+ 
+ 
+ Step3:: Retreive Beans from Spring Container
+ 
+ Coach theCoach =  context.getBean("id of the bean given in application Context","class name of the bean interface ".class);
+ 
+ 
+ 
+ What is Spring Bean--- A spring bean is a simple java object.when objects are created by the  spring container then we refer them as Spring Beans
+ 
+ 
+ Why do we specify className in getBean() method of the ApplicationContext:::
+ 
+ behind the scenes Spring will cast the object for u but there are slight differences to normal casting:
+ it provides a measure of the typeSafety by throwing a BeanNotRequiredTypeException	 if the bean is not of the required type
+ ClassCastException cant be thrown on casting the  result correctly, as that can happen with only one param getBean(String);
+ 
+ 
+ 
+ Spring Depedency Injection:::
+ 
+ Depedency Injection means like injecting the other object into current object which it depends and returing the current obhect
+ 
+ whenever u request for a particular object from spring container , spring will inject all required dependecies required for that object and return that object....
+ Note:: to inject all required dependencies spring container have all those beans in  container
+ 
+ dependencies are like helper objects
+ 
+ 
+ Injection Typess::::
+ 
+ There are many types of injections in spring and most common are
+ 
+ Constructor Injection,Setter Injection and autowire annotation
+ 
+ 
+ Constructor Injection:::
+ 
+ Define the dependency interface and class
+ Create a constructor in your class for injections
+ Configure the dependency injection in spring Config file
+ 
+ 
+ <bean id="bean2" class="className2"/>
+ <bean id="bean" class="className1>
+	<constructor-arg ref="bean2"/>
+ </bean>
+ 
+ How Spring Framework injects depedency behid the scenes for above config
+ 
+ className2 bean2 = new ClassName2();
+ className1 bean = new ClassName1(bean2);
+ 
+ 
+Setter Injection ::
+
+create setter methods in your class for injections
+configure the dependency injections in spring config file
+
+<bean id="bean2" class="className2"/>
+ <bean id="bean" class="className1>
+	<property name="name of the property" ref="bean2"/>
+ </bean>
+ 
+ Injecting literal values by setter methods
+	<property name="name of the property" value="value of the property"/>
+	
+Inject Values from properties file::
+
+create properties file
+	create a property file 
+load properties file in spring config file
+	<context:property-placeholder location="classpath:"name of property file"/>
+Reference vaues from properties file
+	<property name="name of the property" value="${propertyName}"/>
+	
+	
+Spring Bean Scopes:::
+
+Bean Scopers refers to
+
+lifecycle of a bean
+how long does a bean live
+how many instances are created
+how bean is shared
+
+Default scope of a bean is Singleton
+
+what is singleTon Scope::
+
+Spring container creates only one instance of the bean, by default
+it is cached in memory
+All the requests for the bean will return a shared reference to the same bean
+best usecase of this bean is a stateless bean
+
+How to explicityl specify bean scope::
+
+ <bean id="name of the bean" class = " fully qualified class name" scope = "singleton"/>
+ 
+Additional Bean Scopes ::
+singleton---create a single shared instance of the bean,Default scope
+prototype---Create a new bean instance for each container request
+request ---Scoped to a http web request,only used for web apps
+session---Scoped to a http web sesssion,only used for web apps
+global-session--Scoped to a global http web session,only used for web apps
+
+Prototype Example
+
+prototypeScoe--- new object is created for each request
+ <bean id="name of the bean" class = " fully qualified class name" scope = "prototype"/>
+ 
+BeanLifeCycle :::
+
+container started ----- beans get instantiated -----  dependencies gets injected ---- internal spring processiing happens ----- your customer init method ----- bean is ready for use ---- container is shutdown --- your custom bean destroy method ----- container stops
+
+when context.close() is called the custom destroy method is called and then after successfully exectuing the container gets stopped
+
+Bean Life Cycle methods or Hooks:
+
+You can add some custom code during bean initialization
+
+you can add some custom business logic,
+setting up handles to resources (db,sockets, file etc)
+
+
+Yous can add some custom code during bean desctruction
+
+calling custom bussiness logic method
+clean up handles to resources(db,sockets,files etc)
+
+init-method configuration
+	<bean id="name of the bean" class="fullyQualifiedClassName" init-method="Any init method name"/>
+destroy-method configuration
+	<bean id="name of the bean" class="fullyQualifiedClassName" destroy-method="Any destroy method name"/>
+	
+define your init and destroy methods in the class
+configure the method names in spring config file
+
+Define init and destroy method Signaturess:
+
+AccessModifier---it can have any access modifier
+Return type ---- the method can have any return type but void is most commonly used return type becuase although u return the values those values cannot be captured any where and hence void is used
+MethodName -- it can have any method name
+Arguments -- the method cannot accept any arguments,the method should be no-arg
+
+
+Important Note::
+ for prototyped scoped beans, Spring does not call destroy method
+ In contrast to other scopes,Spring doesnt manage the complete lifecycle of the prototype scoped beans
+ the container instantiates,configures,otherwise asses the prototype object and hands it to the client with no further record of that prototype instance in spring container
+ thus although initializing lifecycle callbacks are called on all objects regardless of the scope,in case of the prototypes configured destruction lifecycle is not called
+ the client code must clean up prototype scoped bean object and release all the expensive resources that prototype beans are holding
+ 
+ 
+ 
+Spring Configuration with Annotations ::::::::::::
+
+
+
+Java annotations::
+Special labels or markers added to Java classes
+provides meta info about the java classess
+processed at compile time or runtime for special processing
+
+Y Spring configurations with Annotations::
+Xml configuration can be verbose
+Annotations minimizes the xml configuration
+
+
+Scanning for Component class::
+Spring will scan your java classes for special annotations
+Automatically registers the beans in the spring container
+
+Development Process::
+Enable component scanning in spring config file
+	<context:component-scan base-package="package name"/>
+	all packages and subpackages are scanned for all the annotatiosn of spring beans and registed those beans in the spring container
+
+Add @Component Anotation to your java class
+	@Commponent("beanId")
+
+Retrieve bean from the spring container
+
+Default Bean Id ---- the className ,make first letter lowercase
+
+
+
+
+

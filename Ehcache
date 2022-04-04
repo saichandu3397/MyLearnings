@@ -1,0 +1,53 @@
+In order to use Ehcache first we need to configure CacheManager and cache through xml or java configuration
+
+EHCache CacheManager should be shared (as a singleton at the VM level) or independent (typically local within the application).
+
+overflowToDisk sets whether element can overflow to disk when the memory store has reached the maximum limit
+
+
+CahceManagerEventListner::::
+ Specifies a cacheManagerEventListnerFactory which is notified  when caches are added or removed from the cache
+ The attributes of CacheManagerEventListenerFactory are:
+    * class - a fully qualified factory class name
+    * properties - comma separated properties having meaning only to the factory.
+ Sets the fully qualified class name to be registered as the CacheManager event listener.
+ 
+ 
+ The events include:
+    * adding a Cache
+    * removing a Cache
+    Callbacks to listener methods are synchronous and unsynchronized. It is the responsibility
+    of the implementer to safely handle the potential performance and thread safety issues
+    depending on what their listener is doing.
+    If no class is specified, no listener is created. There is no default.
+    -->
+    <cacheManagerEventListenerFactory class="" properties=""/>
+    
+    
+Cache Configuration:::::
+ name:: sets the name of the cahce.it is used to identify the cache and it must be unique
+ 
+ maxEntriesLocalHeap--
+ 
+  Sets the maximum number of objects that will be created in memory.  0 = no limit.
+    In practice no limit means Integer.MAX_SIZE (2147483647) unless the cache is distributed
+    with a Terracotta server in which case it is limited by resources.
+    
+ MaxEntriesLocalDisk-----
+ Sets the maximum number of objects that will be maintained in the DiskStore
+    The default value is zero, meaning unlimited.
+ 
+ 
+   eternal:
+    Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+    element is never expired.
+    
+  optional Attributes
+  
+  
+  
+    overflowToOffHeap:
+    (boolean) This feature is available only in enterprise versions of Ehcache.
+    When set to true, enables the cache to utilize off-heap memory
+    storage to improve performance. Off-heap memory is not subject to Java
+    GC. The default value is false.

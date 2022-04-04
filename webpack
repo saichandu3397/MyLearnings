@@ -14,7 +14,7 @@ Webpack core concepts
 
 Entry:
 
-An entry point indicates which module webpack should use to use building internal dependency grahph;
+An entry point indicates which module webpack should be used building internal dependency grahph;
 
 
 module.exports = {

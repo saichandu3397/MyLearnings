@@ -80,7 +80,7 @@ index.js ---------- webpack ---- normal budling process -----main.js (this can b
 container app
 
 index.js(import('./bootstrap.js')----------------------------------webpack ---------  index.js(only contains contents of index.js)
-																			-------bootstrap.js (Contains bootstrap.js. Webpack knows it has to fetch something from products before running this file)
+																-------bootstrap.js (Contains bootstrap.js. Webpack knows it has to fetch something from products before running this file)
 bootstrap.js(import 'products/ProductIndex')
 
 
@@ -119,3 +119,6 @@ Use shared Modules::::
  creating in single repo or seperate repos should not effect overall project
  container should be able to use latest version of child app also or specify a specific version of the child app
  css from one project shouldnt effect the another project(css should be independent)
+
+
+ 

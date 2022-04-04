@@ -1,0 +1,165 @@
+Priority Queue:
+
+it is an abstract data type similar to queue or stack data structure in which each element has priority associated with;
+in priority queue element with highesh priority is served before the element with lowest priority;
+
+priority queue is an abstract data type where as heap is an data structure;
+
+heap is one way to implement the priority queue data type;
+
+priority queue can be implemented through arrays or linked list but they give o(1) time complexilty for either of the operations insertion or deletion but not both;
+other operation will have o(n) time complexity;
+
+if  priority queue is implemented with the heap the both the insertion and deletion operation we would get in o(logn) time complexity;
+
+
+Heap:;
+ 
+ Heap is a special binary tree which meets following conditions
+ 
+ 1) it is a complete binary treee
+ 2)the value of each node mush be no greater than (or less than) the value of its child nodes;
+
+insetion-- o(logn)
+deletion--o(log n)
+max/min value can be obtained at o(1) time complexity
+
+
+Two kinds of heaps:::
+
+Max-Heaps: each node in the heap has a value no less than its child nodes; the root node has the max element
+
+Min-Heap: each node in the head has a value no greater than its child nodes; the root node has the min element;
+
+Heap Insertion:::
+Heap Deletions::: removing top element from heap;After removing the element property of heaps should remain unchanges;
+
+Heap Implementation Using Array:::
+
+we  can implement an Heap using an Array;
+Elements in the heap can be stored in the array in the form of binary tree;
+
+root node is store at place 1.
+for any i th node::
+ index of its parent node: i/2;
+ index of its left child node:i*2;
+ index of its right child node: 2*1+1;
+ 
+Add Element into Heap::
+
+//first add element into the array at last position
+//get the parent node from the index
+
+while(parentNodeElement > currentElement && index > 0){
+	//swap parent node element and current element;
+	index =parent_index;
+	parent_index= index/2;
+
+}
+
+
+Remove Element into the Heap::
+
+//put the last element of array into the top the array
+//reduce the size of the array by one
+//loop till the its not the leaf node
+while(index <2 * size ){
+  // if index element is smaller the left child and right child break the loop;
+  // exchange the value with the smaller of two left and right child;
+  // put index = exchaged index
+
+}
+
+
+How to transform a complete binary tree into the array::::
+
+Construct An Heap:::
+
+Constructing an heap means an initializing an instance of heap;All methods of Heap need to be performed on an instance.
+
+//creating an min heap:::
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+//creating an max head:::
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+
+// Construct a Heap with initial elements. 
+// This process is named "Heapify".
+// The Heap is a Min Heap
+PriorityQueue<Integer> heapWithValues= new PriorityQueue<>(Arrays.asList(3, 1, 2));
+
+timeCOmplexity: o(n)
+space complexity:o(n)
+
+Inserting an Element::
+minHead.add(5);
+timeComplexity:o(log n)
+space complexity:o(1)
+
+Getting top element of the head
+
+minHeap.peek();
+
+timeComplexity: o(1)
+spaceComplexity:o(1)
+
+Deleting the Element from Heap:::
+minHeap.poll();
+timeComplexity: o(logn)
+spaceComplexity:o(1)
+
+Getting the length of the heap:::
+
+Time complexity: O(1)
+Space complexity: O(1)O
+
+minHeap.size();
+
+Heapify is the operation of construting the heap;
+
+Applications of Heap::::
+
+
+Heap Sort------------
+Heap sort sort the group of unordered elements using heap data structure
+
+Sorting Algorithmn using Min-Heap::
+Heapify all elements into the min-heap
+Record and delete the top element
+put the top element into array T that stores all sorted elements. Now heap will remain min-heap
+Repeat the steps 2 and 3 untill heap is empty,The arry T contains all elements sorted in ascending order
+
+timecomplexity: o(nlogN)
+spacecomplexity:o(n)
+
+
+The Top k problem:::
+
+top k largest elements
+Approach1:::
+
+construct a max heap;
+all elememnts into max head
+delete a top element and store in array
+Repeat 3 untill k elements added into the array
+
+
+Appraoch:::
+
+Construct a min heap with size K;
+Add the elements one by one into min heap;
+when there are k elements, compare the current element with the top element of the heap;
+
+if topelement is > current element drop it and proceed to next element
+else replace the top element with the current element and heapify the heap;
+Repeat the steps untill all elements are traversed;
+
+
+
+Kth largest element:::
+Similar to above 2 approaches we can solve the problem;
+
+
+
+
+
+
