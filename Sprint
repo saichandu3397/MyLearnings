@@ -229,6 +229,180 @@ Retrieve bean from the spring container
 Default Bean Id ---- the className ,make first letter lowercase
 
 
+What is Spring Autowiring:::
+
+for dependency injection,Spring can use autowiring
+
+Spring will look for the class that matches the property
+ matches by type ::: class or interface
+Spring will inject it automatically... hence it is autowired
+
+Autowiring Injection types::
+constructor Injection
+setter Injection
+field Injection
+
+Development Process for constructor Injection:::
+
+define dependency interface and class
+create a constructor in your class for injections
+configure the dependency with the @Autowired Annotation
+
+As of Spring Framework 4.3, @Autowired annotation on such a constructor is no longer neccessary if the target bean only defines one constructor to begin with
+However if several constructors are available,atleast one must be annotated to teach the container which one to use
+
+
+Setter Injection with Annotations and Autowiring:
+yn
+create setter methods in your class for the injections
+configure the dependency injection with the @Autowired annotation
+
+Method Injection ---- Injection dependencies  by calling Any methods on your calls,simply give @Autowired annotation
+
+
+Field Injection::::
+
+Inject dependencies by setting field values on your class directly
+Accomplished by using java reflection
+
+Annotations with Autowiring and Qualifiers::::
+
+to be specific which bean to use when there are multiple beans of same type
+use @Qualifier("beanId")
+
+@Qualifier annotation can be applied to 
+constructor injection
+setter injection
+field injection
+
+
+Annotations default Names:::
+
+if the annotation value doesnt indicate the bean name, an appopriate bean name will generated based on the short name of the class with first letter as lower case
+
+HappyFortuneService ----- happyFortuneService
+
+But when first and Second character of the class are capitals then it will generate a bean name same it doest nt convert to lower case
+
+RESTfulService ----- RESTfulService
+
+Behind the scenes spring uses Java Beans Introspectorr to generate the bean names
+
+
+Using @Qualifier with the constructors:::
+
+it should be used inside the construtor arguments
+
+
+ @Autowired
+    public TennisCoach(@Qualifier("randomFortuneService") FortuneService theFortuneService) {
+
+        System.out.println(">> TennisCoach: inside constructor using @autowired and @qualifier");
+        
+        fortuneService = theFortuneService;
+    }
+
+for setter Injection u can use @Qualifier inside the method arguments or on the top of method where @Autowired is used
+
+How to inject properties file from java annotations
+
+create a property file to hold the properties in the name value pairs
+load the properties file in the xml config
+	<context:property-placeholder location="classpath:sport.properties"/>
+Inject the properties into your class
+	@Value("${foo.email}")
+	private String email;
+    
+	@Value("${foo.team}")
+	private String team;
+	
+	
+Bean Scopes with Annotations:::::
+
+@Component
+@Scope("singleton")
+public class RandomClass implements RandomService {
+}
+
+
+for init method --- @PostConstruct
+for destroy method ---- @PreDestroy annotations need to be added for custom bean life cycle methods
+
+
+Spring Configuration with Java Code::::
+
+Instead of configuring the spring container with xml we wil configure it with java code::
+
+create a java class and annotate with @Configuration
+
+@Configuration
+public class SportsConfig{
+}
+Add @ComponentScanning for component scanning (optional)
+
+@Configuration
+@ComponentScanning("basePackageName")
+public class SportsConfig{
+}
+Read Spring java configuration class
+
+AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SportConfig.class)
+
+
+Retrieve bean from the spring container
+
+context.getBean() to retrieve the bean
+
+@PropertySource("propertyFileName") need to be used to load properties file in java configuration class
+@Value annotation need to used to read the property value
+
+
+Define Bean with Java Configurations::::
+
+define method to expose bean
+
+@Configuration
+public class SportsConfig{
+
+	@Bean
+	public FortuneSerive happyFortuneService(){
+		return new HappyFortuneService();
+	}
+
+	@Bean
+	public Coach swimCoach(){
+		SwimCoach coach= new SwimCoach(happyFortuneService());---- inject happyFortuneService dependency into the swim coach bean
+		return coach;
+	}
+}
+Inject bean dependencies
+Read Spring java configuration class
+Retrieve bean from the spring container
+
+
+Inject values from properties file:::
+
+create a property file
+load the property file
+
+@PropertySource("classpath:propertyFileName")
+
+Reference values from the properties file using @Value annotation
+
+Below spring version 4.2 and lower
+
+to add support to ${} to use values from properties we need to create a bean of propertySourcePlace Holder
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer
+                    propertySourcesPlaceHolderConfigurer() {
+        
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+
+
+
 
 
 

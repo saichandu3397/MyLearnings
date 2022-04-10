@@ -27,7 +27,7 @@ docker run hello-world  -----> local machine [docker client --> docker server-->
 
 what is Container:
 
-System call -- running program issues instructions to kerner to interact with the piece of hardware through system calls
+System call -- running program issues instructions to kernel to interact with the piece of hardware through system calls
 
 contains is a running process along with the subset of the resources allocated to that container.
 
@@ -62,6 +62,157 @@ docker create -- preparign the container
 docker start -- runs the process through start up command
 
 
+
+
 docker start -a [container-id] ------- -a is required to watch for specific outpout and print in the terminal any messages
+
+
+Remove Stopped Containers::
+
+docker system prune
+
+Get logs from container:
+
+docker logs <container-id>
+
+stop a running container:
+
+docker stop <container-id>
+
+kill a running container:
+
+docker kill <container-id>
+
+Execute an additional command in container:
+
+docker exec -it <container-id> <command>
+
+docker-- reference to docker client
+
+exec--- run another command
+
+-it --- allows us to provide input to the container
+<container-id> --iD of the container
+<command> --- command to execute
+
+purpose of IT flag:
+
+
+redic-cli has STDIN,STDOUT,STDERR
+
+stuff you type in terminal binds to STDIN
+Stuff that shows up on your screeen is from STDOUT
+stuff that shows up on your screen in form of error is from STDERR
+
+Getting a commonad prompt in a container:
+
+docker exec -it <container-id> sh---- to get the termianl access inside the container
+
+what is sh:
+sh is the name of the program that allow you type commands in terminal and allow to being execute
+it is a command processor
+
+some of the commoand processors are
+bash,powershell,zsh,sh
+
+starting with shell
+
+docker run -it <image-name> sh
+
+each container has its own file sytem in hard disk and they do not share between the different container
+
+
+
+Building custom Images::
+
+DockerFile---- configuration to define how our container should behave
+
+dockerFile ---> docker client ---->docker server-----> usable image
+
+
+
+creating a docker file:
+
+specify a base image
+
+run some commands to install addition programs
+
+specify a command to run on container setup
+
+Building a DockerFile:
+
+create an image that runs redis-server
+
+
+instruction telling docker                                    arguments
+server what to do
+
+FROM                                                           alphine
+
+RUN                                                           apk add --update redis
+
+CMD                                                          ["redis-server"]
+
+
+docker build .
+dokcer build command does giving DockerFile docker-server through docker-cli
+
+. specifes the build context
+
+build context is the set of files and folders that you want to encapsulate or wrap into the container
+
+
+
+FROM alphine
+
+Download alphine image
+
+
+RUN  apk add --update redis
+
+get the image from previous step
+create a container out of it
+Run apk add --update redis in it
+take a snapshot of that containers FS
+shut down that temporary container
+get image ready for the next instruction
+
+CMD ["redis-server"]
+
+
+get the image from previous step
+create a container out of it
+tell the container that it should run 'redis-server' when started ---> container with modified start-up command
+shut down that temporary container
+get image ready for the next instruction
+
+no more steps
+then Output is the image generated from the previous steps
+
+
+Rebuilds with cache::
+
+while docker image build process
+it uses cache from the previous build if nothing changed
+if in any step changes occured from that step it build the images again
+
+Tagging an image:
+
+docker build -t <image-name>  .
+
+-t <image-name> -- tags the image
+. ----Specifies the directory of files/folders to use for the build
+
+-t <dockerId>/<repo/projectName>:<version>
+
+
+
+Manual Image Generation with Docker commit::
+
+generating image from the container:
+
+docker commit -c 'CMD ["redis-server"]' <container-id>
+
+
 
 

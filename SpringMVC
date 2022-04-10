@@ -1,0 +1,163 @@
+SpringMVC:
+framework for building webapplications in java
+Based on model view controller design patterns
+leverages features of spring core framework(IOC and DI)
+
+Spring MVC Benefits::
+ the spring way of building web app ui in java
+ leverage a set of reusable ui in java
+ help manage application state for web request
+ process form data: validation,conversion etc
+ flexible configuration for the view layer
+ 
+ Components of springMVC Application::
+ 
+ a set of web pages to layout UI components
+ A collection of spring beans(COntrollers,Services) etc
+ Spring COnfiguration(XML,annotation or JAVA)
+ 
+ 
+ 
+ webbrowser---------frontController-----------controller----------viewtemplate (model object is shared between them)
+ 
+ front Controller known as Dispatcher Servlet
+ it is part of spring framework and it delegates the requests
+ 
+ we have to create model objects,view templates,controller classes
+ 
+ 
+ Controller:
+ 
+ code create by the developer
+ 
+ containers your business logic
+	handle the request
+	store/retrieve the data
+	place the data in model(container for your data)
+Send to appropriate view template
+
+Model::
+contains your data
+Store or retreive data via backsystems
+place your data in model
+	data can be any java object/collection
+	
+View Template
+
+Spring MVC is flexible
+	supports many view templates
+Most common view template is JSP+JSTL
+Developer creates a page
+ displays data
+ 
+Spring MVC Configuration::
+
+Add configurations to file WEB-INF/web.xml::
+
+Configure spring mvc dispatcher servlet
+
+
+
+set up url mappings to spring mvc dispatcher servlet
+
+Add cofiguration to file WEB-INF/spring-servlet.xml
+
+Add suport spring componenct scanner
+
+Add support for conversion,formatting and validation
+<mvc:annotation-driven/>
+
+Configure Spring MVC view resolver
+
+
+
+Spring Model Object:
+it is the container for your application data;
+In your controller
+	you can put anything in the model
+	string,objects,info from database
+Your View page can access data from the model
+
+
+How to use css,js,images in spring mvc::
+
+css,js,images are like static resources
+
+
+Any static resources are processed as a URL mapping in the spring mvc,you can configure references to static resources in xml file
+
+place the entry in the spring config file
+
+<mvc:resources mapping="/resources/**" location="resourceLocation"/>
+
+now we in view page we can access static files with the following url
+
+${pageContext.request.contextPath}/resources/images/spring-logo.png
+${pageContext.request.contextPath}/resources/css/text.css
+${pageContext.request.contextPath}/resources/js/text.js
+
+
+${pageContext.request.contextPath} to access the correct root directory of the web application
+
+
+Deploying your app to tomcat as a web application::
+
+Right click the project and select Export >WAR file
+
+in destination folder enter any path
+
+outside the eclipse start the tomcat
+
+deploy a new war by copying it to <tomcat install directory>/webapps
+
+after some time you can see a new folder created with your war name
+
+visit your new app with the war name in url
+
+
+
+@RequestParam annotation
+
+spring will read the request param from the request and  bind it to the variable name
+
+
+Adding RequestMapping to the controller::
+
+Serves as  parent mapping for controller;
+All request mappings on the methods in the controller are relative
+
+
+Spring MVC form tags::
+spring mvc form tags are building blocks for a web page
+form tags are configurable and reusable for a web page
+can  make use of a data binding
+Automatically setting/retrieving data from a java object/bean
+
+
+form:form  -  main form container
+form:input -  text field
+form:textarea - multi line text
+form:checkbox
+form:radiobutton
+
+to reference the spring mvc form tags,specify the spring namespaces at the begining of the jsp file
+
+<%@taglib name="form" uri="http://springframework.org/tags/form"%>
+
+
+@ModelAttribute-- bind the data to the bean object and returns for you automatically--binding form data to the java object
+
+******Model Object has a scope of request*********************
+
+
+DropDown list :: 
+
+<form:select path="country>
+	<form:option value="Brazil" label="Brazil"/>
+</form:select>
+
+Radio Button:
+<form:radiobutton path="fovoriteLanguage" value="JAVA"/>
+
+CheckBoxes::
+<form:checkbox path="operatingSystems" value="Linux"/>
