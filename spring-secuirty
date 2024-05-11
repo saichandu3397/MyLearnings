@@ -1,0 +1,45 @@
+ExceptionTranslationFilter detects AccessDeniedException or AuthenticationException
+
+
+CasAuthenticationEntryPoint if authentication fails
+	this redirects the user to the cas server along with the service parameter which is the callback url
+	
+Cas login page will be displayed based on session details
+
+Cas redirects back to original service along with the ticket parameter
+
+
+CasAuthenticationFilter always listens to /login/cas requests
+		it constructs the UsernamePasswordAuthenticationToken representing service ticket
+		it is handed over to AuthenticationManager
+
+Authentication implemation is done by ProviderManager which in turn configured with the CasAuthenticationProvider
+
+
+CasAuthenticationProvider will validate the ticket using the ticketValidator implemented class i.e, Cas20ServiceTicketValidator
+
+if proxy tickets needs to be validated then u have to use Cas20ProxyTicketValidat
+
+TicketValidator makes an HTTPS request to the CAS server in order to validate the service ticket. It may also include a proxy callback URL, which is included in this example: my.company.com/cas/proxyValidate?service=https%3A%2F%2Fserver3.company.com%2Fwebapp%2Flogin/cas&ticket=ST-0-ER94xMJmn6pha35CQRoZ&pgtUrl=https://server3.company.com/webapp/login/cas/proxyreceptor.
+
+
+Back on the CAS server, the validation request will be received. If the presented service ticket matches the service URL the ticket was issued to, CAS will provide an affirmative response in XML indicating the username. If any proxy was involved in the authentication (discussed below), the list of proxies is also included in the XML response.
+
+The Cas20TicketValidator will parse the XML received from the CAS server. It will return to the CasAuthenticationProvider a TicketResponse, which includes the username (mandatory), proxy list (if any were involved), and proxy-granting ticket IOU (if the proxy callback was requested).
+
+Next CasAuthenticationProvider will call a configured CasProxyDecider. The CasProxyDecider indicates whether the proxy list in the TicketResponse is acceptable to the service. Several implementations are provided with Spring Security: RejectProxyTickets, AcceptAnyCasProxy and NamedCasProxyDecider. These names are largely self-explanatory, except NamedCasProxyDecider which allows a List of trusted proxies to be provided.
+
+CasAuthenticationProvider will next request a AuthenticationUserDetailsService to load the GrantedAuthority objects that apply to the user contained in the Assertion.
+
+
+If there were no problems, CasAuthenticationProvider constructs a CasAuthenticationToken including the details contained in the TicketResponse and the GrantedAuthoritys.
+
+Control then returns to CasAuthenticationFilter, which places the created CasAuthenticationToken in the security context.
+
+The user’s browser is redirected to the original page that caused the AuthenticationException (or a custom destination depending on the configuration).
+
+
+
+
+
+SecurityContextHolderFilter SecurityContextPersistanceFilter sessionManagementFilter

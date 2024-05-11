@@ -25,11 +25,48 @@ to install the docker follow the instructions given the confluence page
 docker run hello-world  -----> local machine [docker client --> docker server-->local image cache]
 
 
+Manage Docker as a non-root user:
+
+the docker daemon binds to unix socker instead of tcp port,by default unix socket is owned by the root and other users can only use it accessing through sudo
+
+if we dont want to use docker with sudo
+
+then
+
+create a unix group called docker and add users to it when docker daemon starts it creates a unix socket accessible by members of the docker group
+
+create docker group:
+sudo groupadd docker
+
+Add user to the group:
+sudo usermod -aG docker $USER
+
+logout and logback in so that group membership is re evaluated
+
+on linux we can run following command to activate the changes to the group
+newgrp docker
+
+
+verify the docker commands without the sudo
+
+
+if cli commands are run with sudo then we need to change the permissions of following file
+
+ sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+ sudo chmod g+rwx "$HOME/.docker" -R
+ 
+ 
+ Install Docker Compose::
+ 
+ link to instructions::
+ https://docs.docker.com/compose/install/
+
+
 what is Container:
 
 System call -- running program issues instructions to kernel to interact with the piece of hardware through system calls
 
-contains is a running process along with the subset of the resources allocated to that container.
+container is a running process along with the subset of the resources allocated to that container.
 
 An image is a file system snapshot along with start up command to run the process.
 
@@ -194,7 +231,7 @@ Rebuilds with cache::
 
 while docker image build process
 it uses cache from the previous build if nothing changed
-if in any step changes occured from that step it build the images again
+if in any step changes occured from that step it builds the images again
 
 Tagging an image:
 
@@ -212,6 +249,251 @@ Manual Image Generation with Docker commit::
 generating image from the container:
 
 docker commit -c 'CMD ["redis-server"]' <container-id>
+
+
+
+Example of Running NodeJS application in the container and accessing it through browser::
+
+Steps:
+create nodejs web app
+create a docker file
+Build image from docker file
+Run image as container
+Connect to webapp from the browser
+
+
+COPY    ./ (path to folder to copy from  your maching relative to build context)     ./ (path to copy stuff inside the container)
+
+
+Container Port Mapping:
+
+Docker run with port mapping:
+
+docker run -p  8080 (Route incoming request to this port on local host to) : 8080 (this port inside the container)<image-id>
+
+
+we need to specify the workdir in order to avoid any files inside the container gets overrided by our project files
+
+
+WORKDIR /usr/app (Any following commands in dockerfile will be executed relative to this path in the container)
+
+
+Minimizing cache busting and Rebuilds:
+
+in Docker file
+
+before running npm run install command copy only package.json
+
+after npm run install completed copy remainging files into work directory of the container
+
+
+#specify the base image
+FROM node:14-alphine
+
+#working director of our application
+WORKDIR /usr/app
+
+#just copy package.json for npm install because npm run install required only package install(by this although we make changes in source code it wont install because no changes made to package.json,so docker uses the cache of previous built image)
+COPY ./package.json ./
+
+#Install some dependencies
+RUN npm Install
+
+#copy remaining files into the workdir after npm install
+COPY ./  ./
+
+#Default Command
+CMD ["npm","start"]
+
+
+Options for conneting different containers:
+
+using dockers cli network features
+
+using docker compose
+
+
+what is docker compose::
+
+seperate cli that gets installed along with the docker
+
+used to start up multiple docker containers at the same time
+
+automates some of the long winded arguments we were passing to docker run
+
+
+docker-compose.yml(contains all the options we would normall pass to docker cli) -------docker-compose CLI
+
+
+docker-compose.yml description
+
+Here are the container i want created:
+	redis-server:
+		make it using redis image
+	node-app
+		make it using the dockerfile in the current directory
+		map port 8081 to 8081
+		
+docker run myImage ----- docker-compose up
+
+docker build .
+docker run myImage         -----   docker-compose up --build
+
+
+Lauch in background:
+
+docker-compose up -d
+
+Stop Container:
+
+docker-compose down
+
+
+Restart Policies::
+
+"no"--- never attemp to restart this container if it crashes or stops
+always---if this container stops for any reason always attempt to restart it
+on-failure---only restart the container stops with an error code
+unless-stopped---Always restart it unless we forcibly stop it
+
+
+Status of the containers:
+
+docker-compose ps--- run this command from the directory where docker-compose.yml file is present so that it reads the file and finds all the running containers in your machine and fetch the status
+
+
+
+
+
+Docker Production development:
+
+
+
+WorkFlow :
+
+
+create/change the features --------> push to github ----> create a pull request to merge changes from feature branch to master branch ---->  run the tests --> if success merge pull request with master -->whenever code is pushed set of tests run on the code pase---> if tests pass successfully it is deployed
+
+Dockers Purpose:
+
+Docker is a tool in normal development flow
+
+Docker makes some of these tasks lot easier
+
+
+Docket Volumes:::
+
+
+In general,
+
+Local Folder: -----------------------------------------------------------------Docker Container
+	/src ----------------------------------->copied----------------------------> app/src
+	/public-------------------------------->copied----------------------------> app/public
+in dev mode
+
+if any changes are made in local folder then it doesnt reflect in the container, we need to rebuild the image again to get the changes inside the container which is 
+not effiecient while development
+
+so instead of copying the src and pulbic folder what we can do is referecence those folders from inside the docker container
+
+that is where docker volumes comes into the picture
+	
+
+
+can provide reference to the folder inside the container to the folder outside the container so that if any changes made in the outside folder it gets reflected inside the container
+
+Local Folder: -----------------------------------------------------------------Docker Container
+	/src <--------------------------------------------------------------- reference
+	/public<--------------------------------------------------------------- reference
+	
+Command to map reference folderrs in Docket container
+
+docker run -p  3000 : 3000 -v $(pwd):/app <image_id>
+
+
+BookMarking volumes:
+
+
+since node modules doesnt exist in the local folder we are bookmarking the node module folder
+
+docker run -p  3000 : 3000 -v /app/node_modules -v $(pwd):/app <image_id>
+
+
+--volume <local file system directory absolute path>:<container file system directory absolute path>:<read write access>
+
+
+--tag <image repository>:<image tag>
+
+
+When u forget to tag the image or change the image tags we can use the following commands:
+
+docker image tag <image id> <image repository>:<image tag>
+
+or
+
+docker image tag <image repository>:<image tag> <new image repository>:<new image tag>
+
+
+
+Anonymous volumes  in Docker:
+
+
+Anonomous volume is identical to the bind mount except that you dont need to specify the source directory 
+
+
+Syntax for generating the anonomous volumes is
+--volume <container file system directory absolute path>:<read write access>
+
+
+
+
+Mutl Step Docker Builds
+
+
+Steps for production build
+
+
+use node:alpine
+
+copy package.json file
+
+install dependencies ----- dependencies only needed to execute the npm run build command After build dependencies are not required
+
+run npm run build
+
+start nginx
+
+
+
+
+
+Build Phase                                              Run Phase
+
+Use node:alpine                                         Use nginx
+
+Copy package.json                                      Copy over the result of npm run build 
+
+Install dependencies                                   Start nginx server   
+
+Run npm run build
+
+
+During run phase the result of the build phase is copied ,remaining things in the build phase get dropped since it is not used
+
+
+
+FROM node:16-alpine as builder
+WORKDIR /app
+COPY package.json
+RUN npm run install
+COPY . .
+RUN npm run build
+
+
+FROM nginx
+COPY --from=builder /app/build /usr/share/nginx/html
+
+
 
 
 

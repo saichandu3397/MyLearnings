@@ -1,0 +1,99 @@
+Requirements :
+
+packaging and version of the react applications
+once build and deploy version in any environment
+js,css,images etc assets should be server from cdn
+cdn path is different for different environmnets
+ssr should be supported
+
+
+
+
+Using React version 17  and node version 16 and npm version 8 and webpack version 5
+
+npm run  build ::
+
+created webpack client config file for browser build
+provided entry point and public path as relative path
+
+used babel loader to convert js and jsx files
+
+babel config json  has
+
+preset-env, preset-react,
+
+plugins as plugin proposal decorators , babel plugin styled components
+
+
+
+
+css loader to process css files
+
+asset/resource to process image file imports
+
+
+split the groups into main , vender , phonepesdk
+
+
+all the webpack built files will be created in pulbic folder
+
+we copy all the images present in the project to pulbic/client/app_version/mCart/images
+
+
+public/client/V9/
+	--- js
+	----css
+	----mCart/images
+	---assets---- these consist the files of import statements and require statements
+
+
+
+so successfully created client build
+
+initial process was to create the seperate build for client and server and package into single compressed file and during deployment use these packages
+
+but since it includes two build of same code we thought of building only client build and during server startup process only required things instead of building 
+whole server side (by this we could reduce the webpack build process to half)
+
+
+
+
+
+During deployment the version tar needs to be fetched and extracted
+
+then we need to load env variables of that specific environment and would generate env-config.json file which would contain the path of cdn for that particular environment
+
+In server side entry point in node js
+
+we used load that config file and prepare html for ssr and in that we used to include in script tag in window object
+
+
+before ssr we would convert all import statements of images and require statements of the images to point to the path of cdn so that load on the nodejs server is minimal
+
+
+used webpack require plugin to dynamically the webpack chunk relative path at run time insted of build time
+
+
+
+in build folder following things are included
+
+public folder
+src folder
+package.json
+config.js -- this consists of code to load env variables and public that config file in public/client folder
+
+
+
+npm run config-env ----  to laod env variables of that particular env
+
+npm run start-production --- to run the node server of the project
+
+
+
+so without build server side code we have directly used it , 
+
+
+
+
+
+

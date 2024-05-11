@@ -1,0 +1,123 @@
+What are design Patterns:
+
+Design patterns are common architectural patterns
+
+
+Solid Design Principles:
+
+
+Single Responsibility Principle:
+
+A class should have single reason to change
+A class should have one primary responsibility
+
+seperation of concerns: different classes handling different independent task problems
+
+put one responsibilty in one class
+
+
+Open and Closed Principle:
+
+open for extension means it ok to inherit or implement the existing classess or interfaces
+
+close modification of existing classes which are already thoroughly tested
+
+
+Liskov Substitution Principal:
+
+u should be able to use derived class with the base class without any changes
+
+
+example:
+
+we have a class Rectangle with properties height and width
+we have setters and getters for height and width
+we have method getArea which calculates the area
+
+
+Square class extends the Rectangle class by overiding the setters method of height and width 
+
+now if there is any method which takes Rectangle as a param, and gives result
+
+the result should be given properly if we pass its derived class i.e Square class to that method
+
+otherwise it is violating the Liskov Substition principal
+
+
+
+
+Interface Seggregation Principal:
+
+it is recommendation of how to split the interfaces into the smaller interfaces
+
+YAGNI= You aint gonna need it
+
+
+Example:
+
+interface Maching {
+	print(Document d);
+	fax(Document d);
+	scan(Document d);
+	
+	
+}
+
+
+
+now whatever the class that is implementing the above interface need to implements the three methods
+print,fax,scan
+
+But some class requires need to implement only print method
+means we are focifully making that class to implement the scan and fax methods which they are not gng to use
+
+YAGNI prinicple tells that you should do what u need, you should nt do what u dont need
+
+
+In order to solve the above problem we need to seggragate the interface
+
+interface Printer{
+print
+}
+
+interface Scanner {
+scan}
+
+interface Fax{
+	fax
+}
+
+MultideviceMachine extends Printer,Scanner{}
+
+
+
+this will give flexibility for the classes becuase they are gng to use only those interfaces which are required by them
+
+if one class requires Printer and scanner then it implements two interfaces
+
+if one class requires only Printer then it implements only one interface
+
+if one class requireds Multidevices it implements MultideviceMachine
+
+
+
+
+Dependency Inversion Principle:
+
+
+High level modules should not depend on the low level modules
+Both should depend on the abstractions
+
+Abstractions should not depend on the details
+details should depend on the abstractions
+
+
+
+
+
+Design patterns are typically divided into three categories:
+Creational Patterns:
+Deals with the creation of objects
+Explicit Creation vs Implicit Creations
+Wholesale(Single statement) vs piece by piece(step by step)
+

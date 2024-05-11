@@ -1,0 +1,640 @@
+An Objective c program generally consists of 
+
+Preprocessor Commands
+Interface
+Implementation
+Comments
+Methods
+Statements & Expressions
+Variables
+
+
+Sample Objective C program
+
+
+#import <Foundation/Foundation.h>  // is a preprocessor command, tells an Objective-C compiler to include the Foundation.h file before going to the actual compilation
+@interface SampleClass:NSObject    // simply shows how to create an interface. It inherits an NSObject, which is the base class of all the objects
+- (void)sampleMethod; //shows how to declare a method
+@end // marks as end to interface
+
+
+
+@implementation SampleClass //shows how to implement the interface SampleClass
+- (void)sampleMethod //shows the implementation of the sampleMethod
+{
+   NSLog(@"Hello, World \n"); //NSLog(...) is an another function available in Objective-C which causes the message "Hello, World!" to be displayed on the screen
+}
+@end //marks the end of an implementation
+
+
+int main()  //the main function where the program execution begins
+{
+   SampleClass *sampleClass = [[SampleClass alloc]init];
+   [sampleClass sampleMethod];
+   return 0; //terminates the main() function and returns the value 0
+}
+
+
+Tokens in Objective C:
+Tokens is either a keyword, or an identifier, or a constant, or a string literals, or a symbol. An Objective-C program simply consists of various tokens. For instance, here is an statement consisting six tokens:
+
+NSLog(@"Hello, Tokens\n");
+List of tokens:
+
+NSLog
+(
+@
+"Hello, Tokens\n"
+)
+
+
+
+Identifiers In Objective C:
+
+Identifiers are the name used to identify a variable, function, or any other user-defined things. Here are the rules to follow for naming the identifier:
+
+An identifier starts with a letter A-Z or a-z or an underscore (_) followed by zero or more letters, underscores (_), and digits (0-9)
+
+Objective-C doesn't allow to name identifiers using punctuation characters such as @, $, or %, etc.
+
+Objective-C is a case-sensitive programming language. Therefore, Total and total are the two different identifiers in Objective-C
+
+
+
+Objective C Data Types::
+
+
+Basic Types
+
+Derived Types
+
+Enumerated Types
+
+The type void
+
+The array types and the structure types are referred to as aggregate types.
+
+Note - The type of a function simpply specifies the function's return value type.
+
+
+
+Interger Types in Objective C::
+
+
+int --  2 or 4 bytes
+char - 1byte
+signedchar --  1 byte
+
+
+to get exact size of dataType use sizeof operator
+
+Floating Types in Objective C: 
+
+float,double,long double
+
+Note - The header file named float.h defines macros, allows you to use the above values and the other details about the binary representation of real numbers in your Objective-C programs.
+
+
+Define Constants in Objective C::
+
+
+Here are the two ways to define constants in Objective-C:
+
+using #define preprocessor
+using const keyword
+
+
+Example::
+#define LENGTH 10  
+#define WIDTH  20
+#define NEWLINE '\n'
+
+
+#import <Foundation/Foundation.h>
+int main()
+{
+   const int  LENGTH = 10;
+   const int  WIDTH  = 20;
+   const char NEWLINE = '\n';
+   int area;
+   area = LENGTH * WIDTH;
+   NSLog(@"Value of area: %d", area);
+   NSLog(@"%c", NEWLINE);
+   return 0;
+}
+
+
+
+Objective C Variables::
+
+
+variable is simply a name given to the storage area that an objective c program can manipulate
+
+
+variable defination in objective C:
+
+type variable-name;
+
+variable initialization:
+
+variable-name = value;
+
+Declaration and initialization
+
+type variable-name = value;
+
+
+
+Keyword extern is used for declaring extern variables in Objective-C
+
+int *ptr; 
+
+ptr = &X; stores the address of the variable
+
+
+
+
+Function Declartion in Objective C::
+
+- (return_type) function_name:(argumentType1)argumentName1 
+joiningArgument2:(argumentType2)argumentName2 ... 
+joiningArgumentn:(argumentTypeN)argumentNameN;
+
+
+-(int) max:(int)num1 andNum2:(int)num2;
+
+Define a function in objective C:
+
+- (return_type) function_name:(argumentType1) argumentName1 
+joiningArgument2:(argumentType2)argumentName2 ... 
+joiningArgumentn:(argumentTypeN)argumentNameN
+{
+   body of the function
+}
+
+
+return_type: it is the data type of the function return values
+
+function_name: name of the function
+
+argumentType: type of the argument passed
+
+joiningArgument:  A joining argument is to make it easier to read and to make it clear while calling/invoking it
+
+
+body of the function: This part contains the actual statement(s) that defines what the function does
+
+
+- (int) max:(int) num1 secondNumber:(int) num2 
+{
+	int res;
+	if(num1>num2)
+	{
+		res = num1;
+	}	
+	else
+	{
+		res = num2;
+	}	
+	return res; 
+}
+
+
+calling a function example:
+
+#import <Foundation/Foundation.h>
+@interface SampleClass:NSObject
+/* function declaration */
+- (int)max:(int)num1 andNum2:(int)num2;
+@end
+
+@implementation SampleClass
+
+/* function returning the max between two numbers */
+- (int)max:(int)num1 andNum2:(int)num2
+{
+	int res;
+	if(num1>num2)
+	{
+		res = num1;
+	}	
+	else
+	{
+		res = num2;
+	}
+	return res; 
+}
+@end
+
+int main()
+{
+	int a = 10;
+	int b = 20;
+	int ret;
+	SampleClass *sampleClass = [[SampleClass alloc]init];
+	/* calling a method to get the maximum value */
+	ret = [sampleClass max:a andNum2:b]; // caling sampleClass max method function
+	NSLog(@"Maximum Value = %d\n", ret);
+	return 0;
+}
+
+
+
+Objective C numbers:
+
+You are free to use a wide range of methods in Objective-C to work with NSNumber and some of the important are listed below
+
+(NSNumber *)numberWithChar:(char)value
+
+(NSNumber *)numberWithBool:(BOOL)value
+
+(NSNumber *)numberWithDouble:(double)value
+
+
+- (NSString *)stringValue -- returns string value of the content
+
+
+Objective C Blocks::
+
+
+Blocks are a language-level featured added to Objective-C, that allows you to create distinct segments of code that can be passed around to methods or functions as if they were values. Blocks are Objective-C objects which means they can be added to the collections like NSArray or NSDictionary.
+
+
+
+
+general form of the block:;
+return-type (^blockName)(argumentType);
+
+block implementation:
+return-type (^blockName)(argumentType)= ^{
+};
+
+void (^simpleBlock)(void) = ^{
+    NSLog(@"This is a Objective-C block");
+};
+
+
+to invoke block
+
+simpleBlock();
+
+
+#import <Foundation/Foundation.h>
+typedef void (^CompletionBlock)(); // to define a new type
+@interface SampleClass:NSObject
+- (void)performActionWithCompletion:(CompletionBlock)completionBlock;
+@end
+
+@implementation SampleClass
+
+- (void)performActionWithCompletion:(CompletionBlock)completionBlock{
+    NSLog(@"Action Performed");
+    completionBlock();
+}
+@end
+
+int main()
+{
+    SampleClass *sampleClass = [[SampleClass alloc]init];
+    [sampleClass performActionWithCompletion:^{
+        NSLog(@"Here, Completion is called to intimate action is performed.");
+    }];
+    
+    return 0;
+}
+
+
+output of the above program::
+2014-06-03 13:18:37.932 demo[284:303] Action Performed
+2014-06-03 13:18:37.932 demo[284:303] Here, Completion is called to intimate action is performed.
+
+
+Objective C Arrays:: 
+
+
+An array in Objective-C is used to store a fixed-size sequential collection of elements of the same data type. You can also think an array as a collection of variables of the same data type.
+
+
+All arrays in Objective-C consists of a contiguous memory locations, where the lowest address corresponds to the first element and the highest address corresponds to the last element.
+
+
+Declaring the array::
+
+
+type array-name[array-size];
+int numbers[10];
+
+
+
+Objective C Strings::
+
+
+In Objective-C language, a string is represented by using NSString and its subclass NSMutableString, provides several ways for creating string objects.
+
+Simplest way to create a string is
+
+NSString *greet = @"Hello Objective-C, I am string";
+
+
+Methods avaible to manipulate the string:
+- (unichar)characterAtIndex:(NSUInteger)index;
+
+- (NSString *)capitalizedString;
+- (float)floatValue;
+- (double)doubleValue;
+- (BOOL)hasPrefix:(NSString *)aString;
+- (id)initWithFormat:(NSString *)format ...;
+
+
+
+Objective C Pointers::
+
+every variable has a memory location and every memory location  has its address field  defined and which can be using ampersand(&) operator , the denotes the address of the memory
+
+
+
+#import <Foundation/Foundation.h>
+int main()
+{
+	int  var1;
+	char var2[10];
+	NSLog(@"Address of var1 = %x\n", &var1);
+	NSLog(@"Address of var2 = %x\n", &var2);
+	return 0;
+}
+
+
+Output of the above programming:
+
+2014-08-03 13:18:37.932 demo[17552] Address of var1 = 1c0843fc
+2014-08-03 13:18:37.932 demo[17552] Address of var2 = 1c0843f0
+
+
+
+A pointer is simply a variable whose value is the address of another variable, that is, direct address of the memory location. 
+
+You must have to declare a pointer variable before its use, in storing the address of any variable.
+
+
+
+Declaring a pointer variable in Objective C::
+
+type *variableName
+
+
+
+to use pointers in the objective C:
+
+first declare a pointer variable
+now assign the address of a variable to the pointer
+and then access the value at the address available in the pointer variable
+
+
+
+#import <Foundation/Foundation.h>
+int main()
+{
+	int  var = 20;
+	int  *iptr;		/* pointer variable declared */
+	iptr = &var;		/* address of var variable is assigned to the pointer variable */
+	NSLog(@"Address of var = %x\n", &var);
+	NSLog(@"Address stored in iptr = %x\n", iptr);
+	NSLog(@"Value of *iptr = %d\n", *iptr);
+	return 0;
+}
+
+
+
+
+NULL pointers in Objective C::
+
+A good Objective-C programmer always assigns a NULL value to a pointer variable in case they don't have any exact address to be assigned. This is simply done at the time of pointer variable declaration. A pointer which is assigned NULL is called as NULL pointer in Objective-C.
+
+
+
+
+Objective C Structures::
+
+Structure is the userDefined datatype that is available in Objective-C that allows to combile the data types of the different kind
+
+Structure are generally used to represent  a record
+
+
+Defining a Structure in Objective C:
+
+struct [structure tag]
+{
+	member definition;
+	member definition;
+	.
+	.
+	.
+	member definition;
+   
+} [structure variable(s)];
+
+
+struct STUDENTS
+{
+	int rollno;
+	NSString *name;
+	NSString *branch;
+	NSSString *batch;
+} stud;
+
+struct STUDENTS stud1
+
+
+
+Objective C Preproccors:
+
+The preprocessor in Objective-C is not a part of the Objective-C compiler, but is a separate step in the compilation process.
+The preprocessor in Objective-C is simply a text substitution tool and it instructs the Objective-C compiler to do the required pre-processing before the actual compilation
+
+All preprocessor commands begin with # symbol
+
+
+#include -- to include any header files from another files
+#define -- The #define preprocessor directive substitutes a preprocessor macr
+if - The #if preprocessor directive tests if a compile time condition is true or not
+#ifdef - The #ifdef preprocessor directive returns true if this macro is defined
+
+
+
+
+Objective C Typedef::
+
+typedef is a keyword  used in giving a new name for datatype  in Objective C;
+
+typedef unsigned char BYTE
+
+now BYTE can be used as abbrevation  for the type unsigned char
+
+BYTE b1, b2;
+
+
+
+Objective C TypeCasting:
+
+Type Casting is a process of converting a variable  from one data type to another data type
+
+(type-name) expression
+
+
+
+Objective C Classes and Objects::
+
+
+some characteristics of the classes and objects in objective C:
+
+class is defined in two sectiosn named @Interface and @Implementation
+Classes hide the implementation of an object
+Almost everything is in the form of the objects
+Objects have instance variables
+Objects and instance variables have scopes
+Properties are used to  provide access to the class instance variables in other classes
+Object receives messages and often reffered as receivers
+
+
+Class Defination in Objective C: 
+
+All classes are derived from the base class NSObject in Objective C
+
+@interface Box:NSObject
+{
+    /* these are instance variables */
+    double len;   // Length of Box
+    double bre;   // Breadth of Box
+}
+@property(nonatomic, readwrite) double hei;
+@end
+
+instance variables are private and only accessable inside the class
+
+
+Allocating and initializing the Objects in Objective C::
+
+
+Box box1 = [[Box alloc]init];
+
+
+
+Accessing the datamembers in Objective C:
+
+
+The properties of objects of a class in Objective-C, can be access simply by using the direct member access operator (also called as dot (.) operator).
+
+Example::
+
+#import <Foundation/Foundation.h>
+@interface Box:NSObject
+{
+	double len;   // Length of a box
+	double bre;  // Breadth of a box
+	double hei;   // Height of a box
+}
+@property(nonatomic, readwrite) double hei;
+-(double) volume;
+@end
+
+@implementation Box
+@synthesize hei; 
+-(id)init
+{
+	self = [super init];
+	len = 1.0;
+	bre = 1.0;
+	return self;
+}
+-(double) volume
+{
+	return len*bre*hei;
+}
+@end
+
+int main()
+{
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];    
+	Box *box1 = [[Box alloc]init];
+	Box *box2 = [[Box alloc]init];
+	double vol = 0.0; 
+	
+	box1.hei = 5.0; 
+	box2.hei = 10.0;
+	
+	vol = [box1 vol];
+	NSLog(@"Volume of box1 = %f", vol);
+	vol = [box2 vol];
+	NSLog(@"Volume of box2 = %f", vol);
+	[pool drain];
+	
+	return 0;
+}
+
+Output::
+2010-08-03 13:18:37.932 ClassAndObjects[387:303] Volume of box1 = 5.000000
+2010-08-03 13:18:37.932 ClassAndObjects[387:303] Volume of box2 = 10.000000
+
+
+Objective C Category:
+
+Many times, you want to extend an existing class just by adding the behaviour, which is useful in some situations. 
+To add such extension to an existing classes, you have categories and extensions in Objective-C.
+
+@interface ClassName (CategoryName)
+
+@end
+
+#import <Foundation/Foundation.h>
+
+@interface NSString(MyAdditions)
++(NSString *)get_copyright_string;
+@end
+
+@implementation NSString(MyAdditions)
++(NSString *)get_copyright_string
+{
+	return @"Copyright Codescracker.com 2015";
+}
+@end
+
+int main(int argc, const char * argv[])
+{
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSString *copyright_string = [NSString get_copyright_string];
+	NSLog(@"Accessing Category = %@", copyright_string);
+	[pool drain];
+   
+	return 0;
+}
+
+Output: 
+
+2015-10-03 21:19:12.125 Categories[340:303] Accessing Category = Copyright Codescracker.com 2015
+
+
+Objective C Extension
+
+
+@interface ClassName ()
+
+@end
+
+
+In Objective-C, a class extension contains some similarity to category,
+ but it can only be added to class for which you have the source code at the compile time of the program (the class and the class extension is compiled concurrently.
+
+The methods declared by class extension are simply implemented in the implementation block for original class, so you can not.
+ For instance, declare a class extension on a framework class, such as Cocoa or Cocoa Touch class like NSString.
+
+
+
+
+
+
+
+
+
+
+
+

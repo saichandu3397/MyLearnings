@@ -1,0 +1,38 @@
+vh stands for view port  height  and is relative to 1% of the height of the viewport
+
+The rem unit stands for root em, and is relative to the font size of the html element.
+
+give them width of unset. This will remove the earlier rule
+
+h-hour
+m-minute
+s:second
+aa
+
+
+
+
+DATE_WITH_24_TIME :
+   mmm dd yyyy HH:MM:ss
+   MMM dd yyyy HH:mm:ss
+DATE_WITH_12_TIME :
+	mmm dd yyyy hh:MM:ss TT
+	MMM dd yyyy hh:mm:ss aa
+   
+PADDED_DATE :
+  mm/dd/yyyy
+  MM/dd/yyyy
+
+ISO_DATE :
+	yyyy-mm-dd
+	yyyy-MM-dd
+
+ISO_DATE_24_TIME :
+	yyyy-mm-dd HH:MM:ss
+	yyyy-MM-dd HH:mm:ss
+ISO_DATE_12_TIME :
+	yyyy-mm-dd hh:MM:ss TT
+	yyyy-MM-dd hh:mm:ss aa
+	
+
+  

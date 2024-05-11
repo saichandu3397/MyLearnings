@@ -156,7 +156,7 @@ prototypeScoe--- new object is created for each request
  
 BeanLifeCycle :::
 
-container started ----- beans get instantiated -----  dependencies gets injected ---- internal spring processiing happens ----- your customer init method ----- bean is ready for use ---- container is shutdown --- your custom bean destroy method ----- container stops
+container started ----- beans get instantiated -----  dependencies gets injected ---- internal spring processiing happens ----- your custom init method ----- bean is ready for use ---- container is shutdown --- your custom bean destroy method ----- container stops
 
 when context.close() is called the custom destroy method is called and then after successfully exectuing the container gets stopped
 

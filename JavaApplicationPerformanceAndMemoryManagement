@@ -1,0 +1,417 @@
+what happens inside the jvm:
+
+main.java ---javac----> main.class
+
+first on compilation main.java is converted into bytecode main.class
+
+on running the java code then the bytecode class files are interpretated by the jvm
+
+
+what happens inside the jvm when bytecode is run:
+
+
+like any another intepretor jvm also interprets the java bytecode line by line and execute
+
+interpretation line by line makes it slow
+
+languages like c on compilation they convert into native code which is understable by underlying os
+
+so what jvm does is
+
+it checks for the methods that are frequently executed ,then convert to lines of code into native code which is understable by underlying os
+using JUST IN TIME COMPILER(JIT)
+
+this will improve the performance 
+
+code runs faster the longer it is left to run
+
+
+process of jit compiling executes in seperate thread than the process of interpretation and execution thread, so although compilation happens it wont affect the performance because it occurs in another
+thread
+
+Any method or sequence of blocks can be natively compiled by the jit compiler
+
+
+Compiler Flags:
+
+
+to know what kind of compilation is happening while jvm runs java code is by providing below flag to jvm
+
+-XX:+PrintCompilation  flags are case sensitive
+
+natively compiled code runs in special part of memory called code cache
+
+
+java -XX:+PrintCompilation main --- 0n executing this command
+
+we get stats of compilation by jvm
+
+we can know which code is native compiled and which part of code is interpreted by the jvm
+
+
+
+JVM JIT COMPILERS:
+
+
+c1 --- native level 1,native level 2, native level3
+c2 ---- native level 4
+
+
+logging the compilation activity:
+
+java -XX:+UnlockDiagnosticVMOptions -XX:+LogCompilation Main
+
+
+Tuning the code cache size:
+
+VM warning: CodeCache is full.Compiler has been disabled
+
+to pring size of the code cache::
+
+-XX:+PrintCodeCache
+
+java 8 and above
+for 64 bit archeture jvm ----  maxCodeCache size is 2GB
+
+
+Commands for tuning code cache size:
+
+InitialCodeCacheSize
+ReservedCodeCacheSzie
+CodeCacheExpansionSize
+
+
+java -XX:ReservedCodeCacheSize=28m Main
+
+
+Remotely Monitoring the code cache size with Jconsole
+
+
+32 bit                                             64 bit
+might be faster
+if heap size <3gb                                  necessary if heap size >4gb
+Max heap size -4gb                                 might be faster if using long/double
+													max heap size is OS dependent
+client compilers									client and server compiler
+
+
+Specifying which compiler to use at runtime:
+-client  flag -- selects client compiler (no guarantee)
+-server --- selects the 32 bit server compiler
+-d64 --- selects the 64 bit server compiler
+
+-XX:-TieredCompilation--- tells the jvm to run the code only in the interpretated mode only
+java -client
+
+
+
+Tuning native compilation within the virtual machine
+
+we can tune how many threads can be used for native compilation and 
+we can put thresold to no of times the method executed for it to natively compile
+
+
+java -XX:+PrintFlagsFinal--- to know by default how many threads the jvm uses for native compilation
+
+check for CICompilerCount
+
+java -XX:CICompilerCount=4
+
+-XX:CompilerThreshold=n---thresold to no of times method executed for  native compilation
+
+
+Java Memory:
+
+Java memory is divided into three parts:
+Stack,Heap,metaSpace
+
+Most important part we should be aware are Stack memory and Heap Memory
+
+
+Stack:
+
+In java each thread has its own stack 
+
+withing the thread execution all the local variables and function scopes are stored in the stack
+when thread completes its execution memory is freed up from the stack
+
+Stack can store only primitive data types,it cant store the complex data structures
+
+Heap:
+
+Through out the application there is single Heap which shared across the threads
+
+
+Data on stack is only accesed by that thread
+
+Data on heap is accessed by multiple thread
+
+Java Memory Rules:
+
+Objects are stored on the heap.
+
+Variables are a reference to the object
+
+Local variables primitives are stored  on the stack
+
+
+Passing By Values: in java between methods you can pass variables by copying the refence of the variable,you cant pass referece to the method
+Passing By Reference:
+its not possible in java
+
+
+Pass by Value
+
+For objects passed into methods, the REFERENCE to the object is passed BY VALUE
+
+the final Keyword:
+
+the final keyword variable can only be assigned once,it cannot be reassigned to different object or variable
+
+
+Esacaping References:
+
+returing the reference to the  object will allow the outsiders to modify the private variables in the class
+
+
+Ways to avoid Escaping References:
+
+Using an Iterator
+
+Implement the iterable interface and implement the iterable method 
+
+but this method can also have escaping referecnce not a perfect solution
+
+
+Duplicating the collections:
+
+return a copy of object instead of returing the reference to the object
+
+it returns a new object but user can change the underlying objects
+
+memory and perfomance will affect by using this method
+
+
+Using Immutable Collections:
+
+to return immutable collections we can use from Collections class
+Collections.unmodifieableList
+Collections.unmodifieableMap
+
+
+Duplicating Objects
+
+to prevent the escaping the reference of object return the copy of object instead of refercne to actual object
+
+create a constructor that takes the object and returns a copy of the object
+
+
+
+
+Using Interfaces to create the immutable Objects
+
+create an interface of the class without setter method and return with Interface class;
+
+this is not perfect solution,through work aroung user can escapt the referecnes
+
+
+
+The metaspace Memory:
+
+it contains the general metadata about the classes methods etc
+which class or methods should be compiled natively or which should be just interpretated
+it is where the static variables are stored
+
+static primitives  variables are entirely stored in metaspace
+static objects are stored in heap and its referecnes are store in the metaspace
+
+variables in the metaspaces are permantently there and they are never garbage collected because the cannot be derefenced
+
+All threads and all classes can have access to the metaspace
+
+
+Are objects alway created in Heap in java:
+
+java doesnt provide option to programmer whether it should store the object in stack or heap
+
+
+java uses the stack effeciently,since the stack has tight scope it would immediately free up the primitives declared in that scope alos references to the objects in heap
+
+in heap the life time of the object existing is variable,few objects might clean up instantly few might stay for longer time
+
+Some times it is advantage to store the object in stack if it is used by ony single method and only in tha scope because it would free up the space immediately after the execution
+
+So jvm internally optimizes this. some time if jvm thinks the object is not used for long then it will create the object in the stack and removes immediatley from the stack,the programmer
+doesnt have any control overthis
+
+
+String Pool:
+
+String pools live in Heap
+they can be garbage collected
+
+String pool is implemented using a Hash Map
+
+
+Jvm tuning flag: -XX:+PrintStringTableStatistics
+Tuning the size of the string pool:
+-XX:StringTableSize=primeNumber
+
+Tuning the size of the Heap:
+-XX:MaxHeapsize=600m or -Xmx2g 
+-XX:InitialHeapSize=1g or -Xms1g
+
+
+
+
+Introduction to Garbage Collection:
+
+Java works out when objects are no longer needed
+
+Memory leaks shouldnt be possible in java
+
+Garbage collection is a process to free up the memory
+
+Any object on the heap which cannot be reached through a reference from the stack is eligible for the garbage collection
+Sytem.gc()
+Suggests the java virtaul machine to remove the unused objects in the heap memory, jvm makes best possilbe efforts to executet the garbage collection process but it doesnt guarantee its execution
+
+garbage collection will use system resources, so if you call gc method,
+and if garbage collection is started this will effect the appication ,application might be put on hold
+
+
+finalize method:
+when the object is about to garbage collect the finalize method of the object is called
+
+but it doest guarantee that finalize method call because before object gets garbage collected the application  might get shut down
+
+
+Soft leaks: when an object remains referenced when no longer needed
+
+
+Generating the Heap Dump:
+
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=someFilePath
+
+
+
+Garbage Collection:
+
+the mark and sweep process
+
+During the marking phase 
+all the application threads are paused
+from the stack referecne varialbles it marks all the object which have referecne,it will the internal referecnes also as alive untill the object that doesnt have any referecnes
+then in sweep process , the objects which are not marked are freed up in the memory
+
+Generational Garbage Collection:
+
+During mark phase all the threads running in the application are paused which makes the application to stop wrkng for few seconds whenever the garbage collection happens
+
+to minimize this ,
+
+heap memory is divided into two parts
+
+younger generation heap
+
+old generation heap
+
+
+whenever the new objects are created it stores in the young generation
+
+when young generation gets full, minor garbage collection takes place
+
+where it marks and sweeps the objects only in the young generation
+
+since the young generation memory space is small it happens fast
+
+the objects which are present in the young generation are then moved to old generation memory space
+
+when the heap memory gets full then the major garbage collection process takes place, this is time taking process
+because most of the objects which are in the old generation memory space will the references
+
+
+Most objects dont live for long
+
+if an object survives it is likely to live forever
+
+Internals of the young generation::
+
+
+the young generation memory space is divided into three sections
+
+eden,s0,s1
+
+initially when the application started
+
+all the objects are created in the eden space
+
+when eden space is full,
+the referenced objects are moved to one of the s0 or s1
+
+again when memory gets full,
+now all the referenced objects of s0,eden are moved to s1
+
+next time
+all the referenced objects of s1,eden are mvoed to s0
+
+everytime one of s0,s1 will be empty
+
+advantage of the above process only u need to scan 2/3 of the memory for garbage collection process which makes it faster
+
+
+
+Monitering the garbage collections:
+-verbose:gc---command to monitor garbage collection
+
+Command to turn off automated heap allocating size in young generation:
+
+-XX:-UseAdaptiveSizePolicy
+
+Tuning the old and young allocation:
+
+-XX:NewRatio=n
+
+this command tells how much big old generation memory space should be than the new generation memory space
+
+Tuning the survivor space allocation:
+-XX:SurvivorRatio=n
+
+Tuning generations needed to become old:
+-XX:MaxTenuringThreshold=n
+
+max value is 15 and some versions of java allows to set more than 15 but if we set more than 15 it will treat as infinity and old generation memory space wont be used everything will be 
+in young generation which is a bad idea,
+
+
+
+Choosing a Garbage Collector:
+
+Types of Collectors:
+Serial--- uses a single thread to perfomr the garbage collection work,-XX:+UseSerailGC
+Parallel ---- multiple threads perfoming the garbace collection work,-XX:+UseParallelGC---in java 8 default gc 
+Mostly Concurrent---
+application stops only duing the mark phase but it runs in parallel during the sweep process of gc
+there are two mostly used concurrent garbage collectors
+
+MartSweepCollector--- -XX:+UseConcMarkSweepGC---- in java 9 default collector
+G1Collector---- -XX:+UseG1GC--- from java 10  default collector
+
+String De duplication
+
+this feature is available from java 8
+a to turn it on 
+-XX:StringDeDuplication--- only avaialble in G1 collector
+
+What G1 collector does it changes the references of the duplicated strings to single reference and clearing the space of multiple strings only one string will be there in heap
+
+it does by the hash code of the strings
+
+
+How to Assess the application Performances:::
+
+
+Using a profiler:
+
+

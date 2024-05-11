@@ -1,0 +1,10 @@
+cordova plugin allows cordova webview  within which the app renders to communicate with the native platform on which it runs
+
+
+plugin consits of
+
+single js interface and corresponding native code librabries for each supported platform
+
+in essence this will hide the various native code implementations behind the  common js interface
+
+the plugin resposity must feature a top level  plugin.xml manifest file

@@ -1,0 +1,4 @@
+chown -R 200 /home/medplus/Music/nexus-data
+sudo docker run -d -it -p 8081:8081 --name nexus -v /home/medplus/Music/nexus-data:/nexus-data sonatype/nexus3
+
+pm install --save-dev cssnano

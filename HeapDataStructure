@@ -43,7 +43,7 @@ root node is store at place 1.
 for any i th node::
  index of its parent node: i/2;
  index of its left child node:i*2;
- index of its right child node: 2*1+1;
+ index of its right child node: 2*i+1;
  
 Add Element into Heap::
 

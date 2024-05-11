@@ -161,3 +161,113 @@ Radio Button:
 
 CheckBoxes::
 <form:checkbox path="operatingSystems" value="Linux"/>
+
+
+
+Spring MVC form validation:
+
+check user input form for
+required fields,
+valid numbers in a range
+valid format,
+custom business rule
+
+JAVA Standard Bean Validation API:
+
+java has a standard bean validation api
+defines a metadata model and api for entity validation
+not tied to either web tier or persistance tier
+avaible for server side apps and also client side apps
+
+Spring 4 and higher supports bean validation api
+preferred method for validation when building spring apps
+Simply add validation jars to our project
+
+Bean Validation Features:
+required
+validate length
+validate numbers
+validate with regular expressions
+custom validation
+
+
+Validation Annotations:
+
+@NotNull--- checks that the annoted value is not null
+@Min ---- Must be a number >=value
+@Max -----Must be a number <=value
+@Size----Size must match the given size
+@Pattern---Must match a regular expression pattern
+@Future/@Past---Date must be in future or past of given date
+
+
+Java Bean Validation is a specification and vendor independent and portable
+Hibernate validator implements the java bean validation api
+
+
+Hiberate validate 7 is based on the jakarta EE 9
+
+javkarta EE 9 is the community version of the JAVA EE
+it is not the direct replacement of the JAVA EE
+
+Jakarta EE:
+main changes with jakarta are package renaming
+javax.* packages are renamed to jakarta.*
+
+
+Spring 5 is still based on some components of java EE(javax.*)
+
+Spring 5 is not compatible with the hibernate validator 7
+
+Hibernate validator 6.2 is compatable with spring 5
+
+Hibernate validate 6.2 has same features as Hibernate 7
+
+
+Development process for validation:
+
+Add validation rule to customer class
+Display error messages on html form
+perform validation in the controller class
+update the confirmation page
+
+
+To display Error messages:
+<form:errors path="lastName" cssClass="error"/>
+
+
+@RequestMapping('/processForm')
+public String  processForm(@Valid @ModelAttribute('customer') Customer customer,BindingResult bindingResult){
+
+
+}
+
+@Valid -- performs validation rules on the customer object
+the result of the validation placed in the binding result
+
+
+When performing spring MVC validation, the location of the binding result argument is very important,In the method signature
+the binding result argument must appear immediately after the model attribute
+
+
+@InitBinder:
+
+@InitBinder works as a pre processor
+It will preprocess each web requrest to our controller
+Method annotated with @InitBinder will be executed
+
+
+@InitBinder
+public void initBinder(WebDataBinder dataBinder){
+
+	StringTrimmerEditor editor = new StringTrimmerEditor(true);
+
+
+	dataBinder.registerCustomEditor(String.class,editor);
+	
+
+}
+
+preprocess every string form data
+Remove leading and trailing whitespaces
+if string has only white spaces... trim it to null

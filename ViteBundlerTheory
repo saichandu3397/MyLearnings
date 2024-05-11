@@ -1,0 +1,84 @@
+Vite 
+
+modules in app is divided into dependencies and source code
+
+since dependencies doesnt change much of the times they are prebundled using esbuild
+
+esbuild is a javascript bundler written in go
+
+source code is converted into native esm for the browser which allows the browser to load the required files of the current page
+
+
+In Production build vite includes preconfigured build command that uses RollUp to bundle the application
+
+By default Vite offers sensible default RollUp configuration that u can change
+
+
+Webpack build under hood:
+
+Dev Based build
+
+webpack will crawl entire source code and dependencies before launching the dev server
+
+
+Even with HMR enabled, changes can take up to ten seconds to appear in the browser because when you save a file, Webpack rebuilds the entire JavaScript bundle. 
+
+Because of that it takes time to for developers to develop an application
+
+
+Vite Build Under hood:
+
+Dev Based Build: 
+
+Vite only processes your dependency modules before a single module request
+
+improves performance by tranforming the commonjs and umd into native esm during pre bundling this improves loading time
+
+Vite can combine dependencies with multiple internal modules into one module, 
+reducing the number of requests sent simultaneously and enhancing overall page load speed.
+
+when browser request one route , vite only processes the module needed for the route
+
+
+vite is compatable with the multiple rollup plugins 
+
+
+Vite uses the preconfigured Rollup, a more efficient bundler than Webpack, to create apps for production. As a result, Vite's build time typically runs faster than Webpack's and produces smaller output
+
+
+when ur priority is development and build speed then use the vite
+
+when u want to customize a lot then webpack is better because it provides a lot of configuration 
+
+
+
+Vite Currenlty uses two bundlers
+
+esbuild: for dependency pre bundling, Typescript/JSX transformation, target lowering and minfication
+
+RollUp: for the production build and support rollup compatable plugin interface
+
+
+esbuild is blazing fast and feature rich, but its output, especially in terms of chunk splitting limitations, is not ideal for bundling applications.
+
+Rollup is mature and battle tested for bundling applications, but is significantly slower than bundlers written in compile-to-native languages.
+
+
+Our thesis is that given the single-threaded nature of JavaScript and the complexity of bundlers, it is extremely unlikely to achieve the performance level we are aiming for via incremental changes. The performance gain from partially moving components to Rust is often significantly offset by the cost of passing data between Rust and JavaScript, as shown in Rollup 4's adoption of the Rust-based SWC parser. To achieve optimal performance, the entire parse / transform / codegen pipeline needs to happen on the native side, and be parallelized as much as possible. This is only feasible with a ground-up implementation.
+
+
+
+Popularity
+Webpack is more popular and widely used compared to Rollup. It has a larger community and ecosystem surrounding it, with many plugins and tools available. Rollup, however, has been gaining popularity in recent years and is often preferred for smaller, more focused projects.
+Configuration
+Webpack is highly configurable and allows for complex setups, making it suitable for large-scale projects with diverse requirements. It provides extensive configuration options and supports features like code splitting, hot module replacement, and asset optimization. Rollup, on the other hand, takes a more opinionated approach and focuses on simplicity. It has a simpler configuration model, which makes it easier to set up and use for small to medium-sized projects.
+Bundle Size
+Rollup generally produces smaller bundle sizes compared to Webpack. It is known for its tree-shaking capabilities, allowing it to eliminate unused code and optimize the output significantly. Webpack, while it provides some optimization options, tends to have larger bundle sizes by default. However, with proper configuration and tree-shaking setup, Webpack can also achieve smaller bundle sizes.
+Code Splitting
+Webpack has more advanced code splitting capabilities and provides various strategies for splitting code into separate bundles. It supports dynamic imports and allows for granular control over how code is split. Rollup also supports code splitting but has more limited options compared to Webpack.
+Module Formats
+Both Webpack and Rollup support multiple module formats such as ES modules, CommonJS, and AMD. However, Rollup is known for its excellent support for ES modules and is often preferred for projects targeting modern browser environments. Webpack, on the other hand, is more flexible and supports a broader range of module formats, making it suitable for projects with mixed or legacy codebases.
+Build Speed
+Rollup is generally faster than Webpack when it comes to build times. It has a simpler and more streamlined build process, which leads to faster bundling. Webpack, due to its complexity and extensive feature set, can take longer to build, especially for larger projects. However, Webpack provides advanced caching mechanisms and incremental builds, which can help improve build performance.
+Community and Ecosystem
+Webpack has a larger and more established community compared to Rollup. It has a vast ecosystem of plugins, loaders, and tools developed by the community, which helps with integrating various technologies and simplifying complex setups. Rollup, while it has a smaller community, still has a decent number of plugins and tools available, but the ecosystem is not as extensive as Webpack's.

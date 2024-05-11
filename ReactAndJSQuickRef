@@ -1,0 +1,49 @@
+Types :
+
+primitives : when u access primitives u directly work on their value
+
+string , number , boolean , null , undefined , symbol , bigin
+
+Symbols and BigInts cannot be faithfully polyfilled, so they should not be used when targeting browsers/environments that don’t support them natively.
+
+
+Complex  : 
+
+When you access a complex type you work on a reference to its value.
+
+Object , array , function
+
+
+
+References :
+
+use const to your references
+
+because const variables cannot be reassinged if not can lead to bugs and difficult to comprenhed the code
+
+
+if you want to reassign the variables the use let instead of const
+
+
+let and const are block scoped where as var is function scoped
+
+
+
+Objects :
+
+use literal syntax for object creation instead of constructor
+
+use const a = {} insted of const a = new Object();
+
+
+Use computed property names when creating objects with dynamic property names.
+
+prefer object spread syntax for the shallow copy insted of Object.assign
+
+
+
+
+Destructuring: 
+
+use desctructuring when accessing the multiple elements
+

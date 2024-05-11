@@ -1,0 +1,14 @@
+In Async methods , the uncaught expetions are by default intercepted by simpleaysncexceptionhandler which logs the uncaught exception
+
+
+@Async method return type can be void or we can wrap the result of the method in Future instance
+
+
+@Async
+public Future<String> asyncMethodWithReturnType(){}
+
+
+Spring provides AsyncResult Class which implement Future
+
+
+we can track the result of async excecution using this class

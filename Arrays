@@ -1,0 +1,53 @@
+Arrays:
+
+
+Array is a data structure consiting of collection of elements
+
+all elements in the array are of same type
+they are placed contiguosly in memory
+each element can be identified uniquely based on their location(0,1,2,3 indexed based we can indenty the elements at a particular position)
+size of the array is fixed
+
+
+Types of Array:
+1D array
+Multidimensional Array--- 2D,3D,....
+
+
+Arrays in memory:
+
+
+1D Array:
+
+array elements in memory are located contiguosly
+
+2D Array:
+
+two dimension array in memory are located contiguosly in the form of 1D array in single array
+
+1 2 3
+4 5 6
+7 8 9
+
+in memory
+ 1 2 3 4 5 6 7 8 9
+ 
+ 3D memory
+ 
+ same as 2D array in memory are located contiguosly in the fomr of 1D array
+ 
+ 
+ Creating an Array:
+ Declare:  creates a reference to an array -- creates a reference variable to array
+ Instantiation of an array: creates an array-- system allocated n contiguos cells in the memory and adrress of the first cell is store in referecned variable created in previous step
+ Initialization:  assing values  to cells in array
+ 
+ datatype[] arr;
+ arr =  new datatype[]
+ arr[0]=10;
+ arr[1]=10;
+ 
+ 
+ Insertion in Array:
+ 
+ 

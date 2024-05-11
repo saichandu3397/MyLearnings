@@ -1,0 +1,66 @@
+Api Gateway pattern
+
+Single interface to for the client to call
+Api gateway internally calls multiple microservices to get the required data and return to the client
+Client need not worry about the location of the microservices
+for client we provide only one interface
+We can also provide single authentication authorisation , validation , logging , load balancing , request and response manupulation , protocol conversion etc
+using api gateway pattern
+
+
+Cons :
+
+Single point of failure
+It can become complex if not implemented properly
+acheiving data isolation and autonomy in the micro service architechture
+
+
+
+Database per service :
+
+each service owns its own database independent of the other services
+loose coupling and high cohesion
+independent scaling
+
+Challenges:
+
+ensuring data consistency across services
+
+
+
+Circuet Breaker pattern:
+
+if one service depends on the other service and other service becomes slow or down then it can impact all the dependent services leading to cascading failure
+
+
+with the above pattern , we can prevent calling the failed service and periodically call the service and if successfull enable the calling of that failed service
+
+
+it helps to maintaint the service performance and avoids the timeouts during the failure
+it requires careful tuning to balance b/w the responsiveness and sensitivity to failure
+
+
+Key pattern to build the resilient microservices
+
+
+
+Event Driven pattern:
+
+to maintain data consistency across the services
+
+service publish the changes with their state changes
+
+subscribed services update their services according to the events received from the service
+
+improving performance by enabaling the asynchronous communication between the services
+
+
+
+Saga pattern:
+
+to implement the transactions that span multiple microservices
+
+sequence of local transactions where each transaction update the data with single service and if single service fails to update the data , it undos the impact 
+of the preceeding transactions
+
+it can increase the complexity to the system
