@@ -1,0 +1,54 @@
+Instruction to build image for node application: 
+
+
+get node-alphine base image 
+
+
+set the default wrking directory as app
+
+
+Copy the package.json file
+
+
+Run the command to install the dependencies
+
+copy the rest of the folder of the application
+
+expose the port
+
+
+enter the startup commands to run the node application
+
+
+while building we can specify the build version to the image
+
+
+
+
+
+
+
+After image got build with specific versions then
+
+while running the container
+
+we can copy the assets from the build folder inside the container to static container
+
+
+
+FROM node:lts-alpine as builder
+
+WORKDIR /app
+
+COPY ./package.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine
+
+EXPOSE 80
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+

@@ -1,0 +1,152 @@
+Thread states :
+
+new --- created but not started 
+runnable --started execution
+blocked -- waiting to acquire lock
+waiting -- wainting for some other thread to perform a task
+TIMED_WAITING: waiting for a specified time period
+TERMINATED: completed execution or aborted
+
+we can control the thread states with methods like start(),sleep(), join()and more
+
+Thread Synchronization:
+
+Benefits of Executor service:
+Thread Pool Management
+Resource Utilization
+Tast Abstraction
+Scalability
+
+
+Thread Creation:
+
+By extending the thread class and overriding the run method
+
+to start a new thread we need to call start() method
+
+
+One common mistake is to call the run() method to start the thread. It might seem correct as everything works just fine, but calling the run() method does not start a new thread. Instead, it executes the code of the thread inside the parent thread. We use the start() method to execute a new thread.
+
+By Implementing the runnable interface
+
+By using anonomous declarations
+
+
+Join method:
+
+if we call t2.join() inside t1 then t2 will be in waiting state till the t1 finish execution
+thread.sleep() puts the current thread into waiting for some mentioned time interval
+
+
+
+Race Condition Example:
+
+ReadWrite Race Condition:
+
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+ class Increment {
+     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private int count = 0;
+
+    public synchronized void increment() {
+         lock.readLock().lock();
+        try{
+                    count += 1;
+
+        }finally {
+            lock.readLock().unlock(); 
+        }
+    }
+
+    public int getCount() {
+                lock.writeLock().lock();
+
+        try{
+            return this.count;
+            
+        }finally {
+                    lock.writeLock().unlock();
+
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Increment eg = new Increment();
+        for (int i = 0; i < 1000; i++) {
+            Thread thread = new Thread(eg::increment);
+            thread.start();
+        }
+        System.out.println(eg.getCount());
+    }
+}
+
+
+
+Deadlocks:
+
+Deadlock occurs when two or more threads are unable to proceed because each of them is waiting for the other to release a resource or take a specific action. As a result, they remain stuck indefinitely, unable to make progress
+
+
+JavaConcurrent Collections:
+
+ConcurrentHashMap:
+thread safe alternative to HashMap;
+provide methods for atomic updates and retreival operations
+putIfAbsent , remove, replace to perform operations atomically and avoid race conditions
+
+CopyOnWriteArrayList:
+
+
+Consider a scenario where one thread is trying to read or iterate over an array list while another thread is trying to modify it. This might create inconsistencies with read operations or even throw ConcurrentModificationException.
+
+CopyOnWriteArrayList solves this problem by copying the content of the entire array every time it is modified. That way, we can iterate over the previous copy while a new copy is being modified.
+
+The thread-safety mechanism of CopyOnWriteArrayList comes with a cost. Modifying operations, such as adding or removing elements, are expensive because they require creating a new copy of the underlying array. This makes CopyOnWriteArrayList suitable for scenarios where reads are more frequent than writes.
+
+
+
+Thread Class:
+
+isDaemon() -- to know whether current thread is daemon or not
+start() -- it starts the execution of the thread
+run() -- it does the executable operation statements in the body of this method over a thread
+sleep() -- static method that puts thread to sleep for certain amount of time where it is passed as argument
+wait() --it sets the thread back into waiting state
+notify() -- it gives notification to the one thread that is in waiting state
+notifyAll() -- it gives notification to all threads that are in waiting state
+setDaemon() -- to set the thread as daemon thread
+stop() --it is used to stop the execution of the thread
+resume() -- it is used to resume suspended thread
+
+
+Priorities in thread:
+each thread is given priority which is represented as numbers from 1 to 10
+
+default priority is 5
+min priority is 1
+max priority is 10
+
+
+Daemon thread:
+service provider thread that provides service to the user thread. 
+it start and termination depends on the user thread
+low priority thread
+it is dependent thread as it has no existence on its own
+VM terminates the thread as soon as user threads are terminated and come back into play as the user’s thread starts.
+Yes, you guess the most popular example is garbage collector in java. Some other examples do include ‘finalizer’
+
+user thread should only start after setting daemon thread to avoid any exceptions
+
+
+Thread Safety can be acheived by following ways
+
+using 	Synchronisation
+using Volatilekeyword
+Using atomic Variable
+Using final Keyword
+
+
+

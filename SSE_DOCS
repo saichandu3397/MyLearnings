@@ -1,0 +1,63 @@
+Server Sent Events:::
+
+
+Server-Sent Events (SSE) is a simple technology to implement asynchronous server-to-client communication for specific web applications.
+
+
+There are several technologies that allow a client to receive messages about asynchronous updates from a server. They can be divided into two categories: client pull and server push
+
+Server-Sent Events is a technology to send text messages only from a server to clients in browser-based web applications. 
+
+Server-Sent Events is based on persistent connections in the HTTP protocol. Server-Sent Events has the network protocol and the EventSource client interface standardized by W3C as part of HTML5 standards suite.
+
+A persistent connection is a network communication channel that stays open for additional HTTP requests and responses instead of closing after an exchange
+
+
+protocol : http
+
+
+
+
+Web Socket :
+
+
+WebSocket is a technology to implement simultaneous, bi-directional, real-time communication in web applications. WebSocket is based on a protocol other than HTTP, so it can require additional setup of network infrastructure (proxy servers, NATs, firewalls, etc). However, WebSocket can provide performance that is difficult to achieve with HTTP-based technologies.
+
+
+
+
+
+
+To subscribe to server events, a client should make a GET request with the headers:
+
+Accept: text/event-stream indicates media type of events required by the standard
+Cache-Control: no-cache disables any events caching
+Connection: keep-alive indicates that a persistent connection is being used
+
+
+GET /sse HTTP/1.1
+Accept: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+
+
+A server should confirm the subscription with a response with the headers:
+
+HTTP/1.1 200
+Content-Type: text/event-stream;charset=UTF-8
+Transfer-Encoding: chunked
+
+
+
+
+
+There are limitations of SSE by design:
+
+it’s possible to send messages in only one direction, from server to clients
+it’s possible to send only text messages; despite it’s possible to use Base64 encoding and gzip compression to send binary messages, it can be inefficient.
+But there are also limitations of SSE by implementation:
+
+Internet Explorer/Edge and many mobile browsers don’t support SSE; despite it’s possible to use polyfills, they can be inefficient
+many browsers allow opening a very limited number of SSE connections (up to 6 connections per browser for Chrome, Firefox)
+
+

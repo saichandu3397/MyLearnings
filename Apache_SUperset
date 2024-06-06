@@ -1,0 +1,122 @@
+Configuring Superset:
+
+superset_config.py::
+
+exposes configuable params through config.py module
+
+to configure the application
+
+create own configuration module which will allow to override few or more params from above module
+
+define own module typically superset_config.py
+and add this file to PYTHONPATH or create env variable SUPERSET_CONFIG_PATH specify full path of above file name
+
+export SUPERSET_CONFIG_PATH=/app/superset_config.py
+
+in docker file
+
+COPY --chown=superset superset_config.py /app/
+ENV SUPERSET_CONFIG_PATH /app/superset_config.p
+
+docker compose deployments uses the configuration differently
+
+
+Some Configurations u can set in superset_config.py:
+
+ROW_LIMIT = 5000
+# Flask App Builder configuration
+# Your App secret key will be used for securely signing the session cookie
+# and encrypting sensitive information on the database
+# Make sure you are changing this key for your deployment with a strong key.
+# Alternatively you can set it with `SUPERSET_SECRET_KEY` environment variable.
+# You MUST set this for production environments or the server will refuse
+# to start and you will see an error in the logs accordingly.
+SECRET_KEY = 'YOUR_OWN_RANDOM_GENERATED_SECRET_KEY'
+
+
+# The SQLAlchemy connection string to your database backend
+# This connection defines the path to the database that stores your
+# superset metadata (slices, connections, tables, dashboards, ...).
+# Note that the connection information to connect to the datasources
+# you want to explore are managed directly in the web UI
+# The check_same_thread=false property ensures the sqlite client does not attempt
+# to enforce single-threaded access, which may be problematic in some edge cases
+SQLALCHEMY_DATABASE_URI = 'sqlite:////path/to/superset.db?check_same_thread=false'
+
+
+# Flask-WTF flag for CSRF
+WTF_CSRF_ENABLED = True
+# Add endpoints that need to be exempt from CSRF protection
+WTF_CSRF_EXEMPT_LIST = []
+# A CSRF token that expires in 1 year
+WTF_CSRF_TIME_LIMIT = 60 * 60 * 24 * 365
+
+# Set this API key to enable Mapbox visualizations
+MAPBOX_API_KEY = ''
+
+
+You'll want to change:
+
+SECRET_KEY: to a long random string
+SQLALCHEMY_DATABASE_URI: that by default points to sqlite database located at ~/.superset/superset.db
+
+
+
+Setting up a production metadata database
+
+Superset needs a database to store the information it manages, like the definitions of charts, dashboards, and many other things.
+
+PostgreSQL	10.X, 11.X, 12.X, 13.X, 14.X, 15.X
+MySQL	5.7, 8.X
+
+
+mysql://<UserName>:<DBPassword>@<Database Host>/<Database Name>
+pip install mysqlclient	
+
+To configure Superset metastore set SQLALCHEMY_DATABASE_URI config key on superset_config to the appropriate connection string.
+
+
+
+Connecting to Databases
+Superset does not ship bundled with connectivity to databases. The main step in connecting Superset to a database is to install the proper database driver(s) in your environment.
+
+
+Installing Database Drivers
+Superset requires a Python DB-API database driver and a SQLAlchemy dialect to be installed for each database engine you want to connect to.
+
+# A list of preferred databases, in order. These databases will be
+# displayed prominently in the "Add Database" dialog. You should
+# use the "engine_name" attribute of the corresponding DB engine spec
+# in `superset/db_engine_specs/`.
+PREFERRED_DATABASES: list[str] = [
+    "PostgreSQL",
+    "Presto",
+    "MySQL",
+    "SQLite",
+]
+
+
+
+$ docker run -d -p 8080:8088 -e "eqg9FDDs7otRTi/YGS3xgiLH56w0ZepmWOLT7loqD3J0ASTWM/tD5xvy" --name superset apache/superset
+
+
+setup local admin port
+
+docker exec -it superset superset fab create-admin \
+              --username admin \
+              --firstname Superset \
+              --lastname Admin \
+              --email admin@superset.com \
+              --password admin
+              
+              
+              
+              Migrate local db to latest
+              
+              
+  docker exec -it superset_1.0 superset db upgrade
+
+
+$ docker run -d -p 8080:8088 -e "eqg9FDDs7otRTi/YGS3xgiLH56w0ZepmWOLT7loqD3J0ASTWM/tD5xvy" --name superset superset_local
+
+

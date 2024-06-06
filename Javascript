@@ -1,0 +1,145 @@
+Type Conversion in Javascript:
+
+Number conversion rules
+
+undefined --- NAN
+null  --------0
+true or false --- 1 or 0
+string --- Whitespaces from the start and end are removed; if string is empty then the result is 0;
+           Otherwise number is read from the string or it gives NAN error if it not a number;
+           
+           
+Boolean Conversion:
+0,emptyString,null, undefined,NAN  becomes false;
+Other values become true;
+
+
+
+Arrow Functions:
+
+arrow functions do not have this; if this is accessed it is taken from outside
+arrow functions cant be used as a constructor, they cant be called with new word
+
+
+There’s a subtle difference between an arrow function => and a regular function called with .bind(this):
+
+.bind(this) creates a “bound version” of the function.
+The arrow => doesn’t create any binding. The function simply doesn’t have this. The lookup of this is made exactly the same way as a regular variable search: in the outer lexical environment.
+
+
+Arrow functions have no arguments variable
+
+
+they dont have super keyword
+
+
+Objects::
+
+objects are stored by reference whereas primitives are stored by values
+
+
+A Variable assinged to object stores not object itself but the its address in memory otherwords it reference
+
+For comparisons like obj1 > obj2 or for a comparison against a primitive obj == 5, objects are converted to primitives. We’ll study how object conversions work very soon, but to tell the truth, such comparisons are needed very rarely – usually they appear as a result of a programming mistake.
+
+
+An important side effect of storing objects as references is that an object declared as const can be modified.
+
+
+Cloning an object:
+
+Object.assign(dest,...sources)
+
+
+StructuredClone clones the object with all the nested properties;
+
+
+
+Garbage Collection:
+
+main concept of memory management in javascript is reachability
+
+reachable values are those that are accessible or usable somehow, they are guaranteed to be stored in memory
+
+only unreachable objects are cleaned
+
+the basic garbage collection algorithmn in javascript is mark and sweep algorithmn
+
+all reachable references are marked and the references of those objects are alos marked
+
+unmarked objects are swept away;
+
+Some of the optimizations in algorithmsn are
+
+generational Collection
+
+marking objects are new objects and old objects
+new objects are swept away frequently then old objects
+
+Incremental Collection:
+Split the set in small sets and clear one set at a time 
+
+Idle Time collections:
+to not block main thread, it tries to run only when cpu is idle
+
+
+this keyWord:
+
+The value of this is the object “before dot”, the one used to call the method.
+
+The value of this is evaluated during the run-time, depending on the context.
+
+Calling without an object: this == undefined in strict mode
+
+In non-strict mode the value of this in such case will be the global object (window in a browser, we’ll get to it later in the chapter Global object). This is a historical behavior that "use strict" fixes.
+
+Usually such call is a programming error. If there’s this inside a function, it expects to be called in an object context.
+
+
+Variable Scopes:
+
+let and const :
+block scope
+
+
+Lexical Envrionment:
+
+In JavaScript, every running function, code block {...}, and the script as a whole have an internal (hidden) associated object known as the Lexical Environment.
+
+It has two parts:
+
+Environment Record:
+
+an object that stores all local variables and its properties and some other properties like this
+
+Reference to outer lexical environment, the one associated with outer one
+
+
+Variables,
+Function Declarations
+Inner and outer lexical environment
+
+When a function runs , a new lexical environment is created to store local varaibles , function and parameter calls
+
+inner lexical environment will have access to outer lexical environment
+
+
+All functions remember the Lexical Environment in which they were made.
+so it has reference to all its lexical enviroment variables
+
+
+A variable is updated in the Lexical Environment where it lives.
+
+
+
+A closure is a function that remembers its outer variables and can access them. In some languages, that’s not possible, or a function should be written in a special way to make it happen. But as explained above, in JavaScript, all functions are naturally closures (there is only one exception, to be covered in The "new Function" syntax).
+
+
+
+Var:
+has no block scope
+
+With var, we can redeclare a variable any number of times. If we use var with an already-declared variable, it’s just ignored:
+
+
+

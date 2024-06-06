@@ -1,0 +1,406 @@
+CommonJS(CJS) : Suitable for nodejs and other bundlers
+
+amd(Asynchronous Module Defination) : Used with module loaders like requirejs
+
+umd(Universal Module Defination) : Works as amd , cjs and iife all in one
+
+es : Keep the bundle as an esmodule file 
+
+
+Example code:
+
+index.js
+
+/**
+ * This is the main file
+ */
+import { increase } from './increase';
+import { decrease } from './decrease';
+import others, { e } from './others';
+
+function multiply(total, value) {
+  return total * value;
+}
+
+function divide(total, value) {
+  return total / value;
+}
+
+export function power(total, value) {
+  return total ** value;
+}
+
+let total = others.a;
+
+total = increase(total, 10);
+total = increase(total, 20);
+total = decrease(total, 5);
+total = multiply(total, e);
+
+console.log(`Total is ${total}`);
+
+
+increase.js
+export const increase = (total, value) => total + value;
+
+
+decrese.js
+export const decrease = (total, value) => total - value;
+
+
+others.js
+export default {
+  a: 1,
+  b: 2,
+  c: () => 3,
+};
+
+export const d = 4;
+export const e = 5;
+
+
+CJS :
+
+mostly used in node and outside browser environmnets
+
+CJS can be recognized by the use of the require() function and module.exports. require() is a function that can be used to import symbols to the current scope from another module. module.exports is an object that the current module returns when it is required in another module.
+
+CJS is syncrhonous and are loaded at the moment in the order which they are required in source file
+
+
+ROll UP GENERATED CJS FILE :
+
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+/**
+ * Increase the current total value
+ * @param {number} total The current total value
+ * @param {number} value The new value to be added
+ * @returns {number} The new total value
+ */
+const increase = (total, value) => total + value;
+
+/**
+ * Decrease the current total value
+ * @param {number} total The current total value
+ * @param {number} value The new value to be subtracted
+ * @returns {number} The new total value
+ */
+const decrease = (total, value) => total - value;
+
+var others = {
+  a: 1,
+  b: 2,
+  c: () => 3,
+};
+const e = 5;
+
+/**
+ * This is the main file
+ */
+
+function multiply(total, value) {
+  return total * value;
+}
+
+function power(total, value) {
+  return total ** value;
+}
+
+let total = others.a;
+
+total = increase(total, 10);
+total = increase(total, 20);
+total = decrease(total, 5);
+total = multiply(total, e);
+
+console.log(`Total is ${total}`);
+
+exports.power = power;
+
+We execute this file on the browser side, and it errors out with the message exports is not defined (line 3).
+
+The error can be fixed by including the following code in index.html:
+
+<script>
+  const exports = {};
+</script>
+
+AMD :
+
+Amd is based on cjs to support asynchronous module loading
+
+difference b/w cjs and amd lies in its support for asychronous module loading
+
+AMD is used by RequireJS, working on the browser side
+
+
+ROll UP Generated AMD FILE:
+
+define(['exports'], function (exports) { 'use strict';
+
+  /**
+   * Increase the current total value
+   * @param {number} total The current total value
+   * @param {number} value The new value to be added
+   * @returns {number} The new total value
+   */
+  const increase = (total, value) => total + value;
+
+  /**
+   * Decrease the current total value
+   * @param {number} total The current total value
+   * @param {number} value The new value to be subtracted
+   * @returns {number} The new total value
+   */
+  const decrease = (total, value) => total - value;
+
+  var others = {
+    a: 1,
+    b: 2,
+    c: () => 3,
+  };
+  const e = 5;
+
+  /**
+   * This is the main file
+   */
+                                        
+  function multiply(total, value) {
+    return total * value;
+  }
+
+  function power(total, value) {
+    return total ** value;
+  }
+
+  let total = others.a;
+
+  total = increase(total, 10);
+  total = increase(total, 20);
+  total = decrease(total, 5);
+  total = multiply(total, e);
+
+  console.log(`Total is ${total}`);
+
+  exports.power = power;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+});
+
+We execute this file on the browser side, and it errors out with the message define is not a function (line 1).
+
+The error can be fixed by including require.js in index.html:
+
+<script src=”https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+
+
+ESM (ES2015 Module) :
+
+since node version 12 it started supporting es modules
+it is used both client side and server side
+dynamic import is avaliable form es2020
+
+
+/**
+ * This is the main file
+ */
+
+function multiply(total, value) {
+  return total * value;
+}
+
+function power(total, value) {
+  return total ** value;
+}
+
+let total = others.a;
+
+total = increase(total, 10);
+total = increase(total, 20);
+total = decrease(total, 5);
+total = multiply(total, e);
+
+console.log(`Total is ${total}`);
+
+export { power };
+
+We execute this file on the browser side, and it errors out with the message Uncaught SyntaxError: Unexpected token 'export' (line 45).
+
+<script type=”module” src=”dist/bundle.js”></script>
+
+
+System Module:
+
+SystemJS is a universal module loader that supports CJS, AMD, and ESM modules. Rollup can bundle the code into SystemJS’s native format.
+
+The following is a Rollup-generated file in System format:
+
+System.register([], function (exports) {
+  'use strict';
+  return {
+    execute: function () {
+
+      exports('power', power);
+
+      /**
+       * Increase the current total value
+       * @param {number} total The current total value
+       * @param {number} value The new value to be added
+       * @returns {number} The new total value
+       */
+      const increase = (total, value) => total + value;
+
+      /**
+       * Decrease the current total value
+       * @param {number} total The current total value
+       * @param {number} value The new value to be subtracted
+       * @returns {number} The new total value
+       */
+      const decrease = (total, value) => total - value;
+
+      var others = {
+        a: 1,
+        b: 2,
+        c: () => 3,
+      };
+      const e = 5;
+
+      /**
+       * This is the main file
+       */
+      
+      function multiply(total, value) {
+        return total * value;
+      }
+
+      function power(total, value) {
+        return total ** value;
+      }
+
+      let total = others.a;
+
+      total = increase(total, 10);
+      total = increase(total, 20);
+      total = decrease(total, 5);
+      total = multiply(total, e);
+
+      console.log(`Total is ${total}`);
+
+    }
+  };
+});
+
+We execute this file on the browser side, and it errors out with the message System is not defined (line 1).
+
+Install system.js:
+
+npm install --save-dev systemj
+
+The error can be fixed by including system.js in index.html:
+
+<script src="node_modules/systemjs/dist/s.min.js"></script>
+
+
+
+Immediately Invoked Function Expression (IIFE) Module
+
+
+As the module’s name suggests, IIFE is a self-executing function that is suitable for inclusion as a <script> tag. We can use this format to create a bundle for an application. It helps us to put things into namespaces to avoid variable collisions and keep code private.
+
+The following is a Rollup-generated file in IIFE format:
+
+var example = (function (exports) {
+  'use strict';
+
+  /**
+   * Increase the current total value
+   * @param {number} total The current total value
+   * @param {number} value The new value to be added
+   * @returns {number} The new total value
+   */
+  const increase = (total, value) => total + value;
+
+  /**
+   * Decrease the current total value
+   * @param {number} total The current total value
+   * @param {number} value The new value to be subtracted
+   * @returns {number} The new total value
+   */
+  const decrease = (total, value) => total - value;
+
+  var others = {
+    a: 1,
+    b: 2,
+    c: () => 3,
+  };
+  const e = 5;
+
+  /**
+   * This is the main file
+   */
+
+  function multiply(total, value) {
+    return total * value;
+  }
+  
+  function power(total, value) {
+    return total ** value;
+  }
+
+  let total = others.a;
+
+  total = increase(total, 10);
+  total = increase(total, 20);
+  total = decrease(total, 5);
+  total = multiply(total, e);
+
+  console.log(`Total is ${total}`);
+
+  exports.power = power;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+  return exports;
+
+}({}));
+
+
+output: [
+  {
+    file: 'dist/bundle.amd.js',
+    format: 'amd',
+    sourcemap: false,
+  },
+  {
+    file: 'dist/bundle.cjs.js',
+    format: 'cjs',
+    sourcemap: false,
+  },
+  {
+    file: 'dist/bundle.umd.js',
+    format: 'umd',
+    name: 'example',
+    sourcemap: false,
+  },
+  {
+    file: 'dist/bundle.es.js',
+    format: 'es',
+    sourcemap: false,
+  },
+  {
+    file: 'dist/bundle.iife.js',
+    format: 'iife',
+    name: 'example',
+    sourcemap: false,
+  },
+  {
+    file: 'dist/bundle.system.js',
+    format: 'system',
+    sourcemap: false,
+  },
+]
+

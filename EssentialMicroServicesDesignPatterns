@@ -25,6 +25,9 @@ independent scaling
 Challenges:
 
 ensuring data consistency across services
+Difficult to retreive related data
+difficult to manage transactions
+
 
 
 
@@ -46,6 +49,8 @@ Key pattern to build the resilient microservices
 
 Event Driven pattern:
 
+based on asychronous mode of communication
+
 to maintain data consistency across the services
 
 service publish the changes with their state changes
@@ -53,6 +58,18 @@ service publish the changes with their state changes
 subscribed services update their services according to the events received from the service
 
 improving performance by enabaling the asynchronous communication between the services
+
+decouple the producer and consumer services
+
+
+
+In event model ,
+the service publishes message to message broker and the consuming service that subsribed to message broker
+receive the message.
+
+Some of the popular technologies in this area are
+Kafka , RabbitMQ, Apache pulser , Azure Service Bus, Google pub sub.
+The above all provide highly scalable messaging services to support event driven architechture
 
 
 
@@ -64,3 +81,139 @@ sequence of local transactions where each transaction update the data with singl
 of the preceeding transactions
 
 it can increase the complexity to the system
+
+
+
+
+MicroServices Core Principles:
+
+Single Responsibility
+High Cohension -- all related behaviour should sit together
+Loose Coupling -- change in one service doesnt impact the other service
+
+Hide implementation details
+Avoid Shared Libraries
+Avoid over exposure of entity data
+Avoid Sharing Database
+
+
+
+DataManagement in MicroServices:
+one service one database
+
+if there a shared data required 
+
+which changes frequently then create a service and expose those data through API to other microservices
+
+if the shared data doesnt change frequently (means static data like list of cities)
+
+then data duplicating is one the solution
+
+
+if two microservices dependend on data like
+
+cart service has list of products with productId
+
+product service will have list of products
+
+now in shopping cart if we want to add product description for each item in the cart
+
+then hitting the product service with productId would increase in the overhead cost of the system
+
+other solution is that while adding products into cart store description along with but problem is when product meta data is changed
+we still have old data into cart items , data consistency is problem
+
+the solution depends on your specific requirements;
+
+Transactions in DataBase:
+
+
+Since each service has its own database , the eventual consistency can be acheived through queue mechanism in the microservices architechture.
+
+Eventual consistency provides a flexible mechanism to carry out the distributed transactions.
+
+
+Integrating Microservices:
+
+
+Api technologies:
+
+Rest API:
+Public APIS , ManagmentAPIS , Resource Driven APIS
+Format: XML, JSON, HTML , Plain Text
+Easy to understand and adopt cache freindly
+COns: Schema Less , Heavier Payloads
+
+
+RPC:
+RPC mechanishm is where we build client and server stubs
+Used for Highly Performant APIS, Streaming , Internal Integrations
+The Client API calls the Server API as if they are making the local calls.
+
+Eg: if u need to stream a video content this could be the best choice.
+The advanced frameworks like gRPC and Apache Thrift support multiple format options, including Protobuf,
+
+Thrift, Flatbuffers and Json RPC.
+
+Options are easy to use as the client stubs are ready making calls and reading.
+
+Cons: they do a tight coupling with client api.
+
+
+GraphQL:
+
+More Suited for Mobile APIS where we need data aggregation across the multiple services and we cannot
+afford the multiple service calls
+
+Supports only one format JSON
+
+it provides schema defination and validation features which makes it robust option
+it provide options to define the error messages
+
+Cons:
+No caching, Complet Queries , no rate limiting
+
+
+
+Service Discovery:
+
+Micro services are dynamic in nature
+multiple instances of microservices coexist
+each instance will have different ip address or different port or both are different
+no guarantee that set of instances active now will be active after one hour
+
+Service Discovery is one the pattern which take care
+of
+locating the service instance
+load balancing if multiple instances are there
+DynamicIP addresses and ports
+
+In this pattern we have three modules
+
+service registry: 
+where all the services register themselves here
+
+Load Balancing:
+it works similar to other load balancers, redirects the requests to an active service instances
+
+Health Check:
+This is to ensure the request is forwaded to instance which is healthy.
+
+
+Service Side Discover:
+all the modules are bundled together as one service in the ecosystem
+
+Client Side Discover:
+servier registry will be in remote
+but load balancer will be in client side
+
+Some popular technoligies in this segment are
+
+Netflix Eureka
+
+kubernetes provides complete solution in this regard.
+
+
+
+
+

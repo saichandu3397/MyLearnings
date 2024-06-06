@@ -1,0 +1,60 @@
+cordova requirements :
+ openjdk 11
+ gradle
+ android sdkmanager
+ 
+1) Install jdk 11 (if not installed)
+
+sudo apt update
+sudo apt install openjdk-11-jdk
+
+2) Update JAVA_HOME Variable
+
+update below properties in your shell configuration file (.bashrc)
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+After updating reload the .bashrc (source ~/.bashrc)
+
+3) #install necessary packages if not installed
+
+apt-get update 
+apt-get install -y curl  
+apt-get install -y wget  
+apt-get install -y unzip
+
+
+4) install androidSdk packages using command line tools
+
+wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
+
+mkdir android-sdk-linux
+unzip commandlinetools-linux-8512546_latest.zip -d android-sdk-linux
+mkdir -p android-sdk/cmdline-tools/latest
+mv android-sdk-linux/cmdline-tools/* android-sdk/cmdline-tools/latest/ 
+rm commandlinetools-linux-8512546_latest.zip 
+rm -r android-sdk-linux
+
+5) set Android Sdk path in shell configuration file (.bashrc)
+
+export ANDROID_SDK_ROOT=$HOME/Desktop/android-sdk (need to change to your installtion directory)
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools/
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/
+export PATH=$PATH:$ANDROID_SDK_ROOT/build-tools/
+
+reload the .bashrc file
+
+
+7) Install build tools and platform tools using sdkmanager
+
+sdkmanager "platform-tools" "platforms;android-30" "platforms;android-31" "platforms;android-32"  "build-tools;30.0.3"
+
+
+8)#install gradle
+curl -L https://downloads.gradle-dn.com/distributions/gradle-7.4.2-bin.zip -o gradle-7.4.2-bin.zip
+unzip gradle-7.4.2-bin.zip
+
+9) set gradle environment variable
+export GRADLE_HOME=$HOME/gradle-7.4.2
+export PATH=$PATH:$GRADLE_HOME/bin
